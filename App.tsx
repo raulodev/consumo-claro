@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Animated, {
   useSharedValue,
   withTiming,
@@ -10,10 +10,25 @@ import { StyleSheet, Text, View } from "react-native";
 import { CircularButton } from "./components/circular-button";
 import { MainButton } from "./components/main-button";
 import { calculatePrecie } from "./utils/calculate-precie";
+import { openDatabase } from "./utils/open-db";
+
+const db = openDatabase();
 
 export default function App() {
+  const [kwh, setKwhs] = useState("0");
+  const [precie, setPrecie] = useState(0);
+  const [isShowModal, setShowModal] = useState(false);
+
   const modalHeight = useSharedValue(0);
   const overlayOpacity = useSharedValue(0);
+
+  useEffect(() => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "create table if not exists items (id integer primary key not null, done int, value text);"
+      );
+    });
+  }, []);
 
   const styleAnimationModal = useAnimatedStyle(() => {
     return {
@@ -32,10 +47,6 @@ export default function App() {
       }),
     };
   });
-
-  const [kwh, setKwhs] = useState("0");
-  const [precie, setPrecie] = useState(0);
-  const [isShowModal, setShowModal] = useState(false);
 
   const handlerClick = (value: string) => {
     if (kwh === "0") setKwhs(value);

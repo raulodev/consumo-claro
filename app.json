@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ConsumoClaro",
-    "slug": "ConsumoClaro",
+    "name": "Consumo Claro",
+    "slug": "Consumo-Claro",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,6 +26,8 @@
       "eas": {
         "projectId": "62bc8476-faa6-4055-afb8-6c35584d83a4"
       }
-    }
+    },
+    "plugins": ["expo-router"],
+    "scheme": "com.raulodev.ConsumoClaro"
   }
 }
