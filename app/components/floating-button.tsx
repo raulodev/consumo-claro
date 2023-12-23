@@ -3,6 +3,11 @@ import {
   StyleSheet,
   TouchableHighlightProps,
 } from "react-native";
+import {
+  verticalScale,
+  horizontalScale,
+  moderateScale,
+} from "../utils/metrics";
 
 export const FloatingButton: React.FC<TouchableHighlightProps> = ({
   onPress,
@@ -21,9 +26,9 @@ export const FloatingButton: React.FC<TouchableHighlightProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 50,
-    width: 50,
-    height: 50,
+    borderRadius: moderateScale(50),
+    width: horizontalScale(50),
+    height: verticalScale(50),
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#59adff",

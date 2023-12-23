@@ -6,6 +6,11 @@ import {
   ViewStyle,
   TextStyle,
 } from "react-native";
+import {
+  verticalScale,
+  horizontalScale,
+  moderateScale,
+} from "../utils/metrics";
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
@@ -34,15 +39,15 @@ export const CircularButton: React.FC<ButtonProps> = ({
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#E5E5E5",
-    padding: 10,
-    borderRadius: 50,
-    width: 70,
-    height: 70,
+    padding: moderateScale(10),
+    borderRadius: moderateScale(50),
+    width: horizontalScale(70),
+    height: verticalScale(70),
     alignItems: "center",
     justifyContent: "center",
   },
   buttonText: {
     color: "#757575",
-    fontSize: 24,
+    fontSize: moderateScale(24),
   },
 });

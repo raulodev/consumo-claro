@@ -1,14 +1,20 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
+
+import {
+  verticalScale,
+  horizontalScale,
+  moderateScale,
+} from "../utils/metrics";
 
 interface NavBarProps {
   screen: "main" | "calculator" | "settings";
 }
 
 export const NavBar: React.FC<NavBarProps> = ({ screen }) => {
-  const icon_size = 20;
+  const icon_size = moderateScale(20);
   const icon_color_active = styles.container.backgroundColor;
   const icon_color = "white";
 
@@ -60,21 +66,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingHorizontal: horizontalScale(30),
+    paddingVertical: verticalScale(10),
     backgroundColor: "#59adff",
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
 
   btn_active: {
-    padding: 5,
+    padding: moderateScale(5),
     backgroundColor: "white",
-    borderRadius: 5,
+    borderRadius: moderateScale(5),
   },
   btn: {
-    padding: 5,
-    borderRadius: 5,
+    padding: moderateScale(5),
+    borderRadius: moderateScale(5),
   },
 });

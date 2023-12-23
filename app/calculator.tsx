@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { NavBar } from "./components/navbar";
 import { CircularButton } from "./components/circular-button";
 import { calculatePrecie } from "./utils/calculate-precie";
+import { verticalScale, horizontalScale, moderateScale } from "./utils/metrics";
 
 export default function Page() {
   const [kwh, setKwhs] = useState("0");
@@ -58,7 +59,7 @@ export default function Page() {
         <Text
           style={{
             color: "#757575",
-            fontSize: 24,
+            fontSize: moderateScale(24),
             fontWeight: "600",
           }}
         >
@@ -69,7 +70,6 @@ export default function Page() {
             flex: 1,
             flexDirection: "row",
             alignItems: "center",
-            gap: 30,
           }}
         >
           <Text style={styles.display_text} onPress={reset}>
@@ -81,13 +81,13 @@ export default function Page() {
             flex: 1,
             flexDirection: "row",
             alignItems: "center",
-            gap: 10,
+            gap: moderateScale(10),
           }}
         >
           <Text
             style={{
               color: "#757575",
-              fontSize: 24,
+              fontSize: moderateScale(24),
               fontWeight: "600",
             }}
           >
@@ -101,7 +101,7 @@ export default function Page() {
                 fontSize:
                   precie.toString().length < 9
                     ? styles.display_text.fontSize
-                    : 38,
+                    : moderateScale(38),
               },
             ]}
             onPress={reset}
@@ -148,32 +148,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 10,
+    padding: moderateScale(10),
     justifyContent: "space-between",
   },
   calculator_container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 20,
-    paddingBottom: 30,
-    paddingTop: 30,
+    padding: moderateScale(20),
+    paddingVertical: verticalScale(30),
   },
   display_text: {
     flex: 1,
     color: "#757575",
-    fontSize: 48,
+    fontSize: moderateScale(48),
     fontWeight: "700",
-    paddingLeft: 10,
-    paddingRight: 10,
-    // borderWidth: 1,
+    paddingHorizontal: horizontalScale(10),
     textAlign: "center",
   },
   row_btns: {
     flexDirection: "row",
     display: "flex",
     justifyContent: "center",
-    gap: 25,
-    marginTop: 35,
+    gap: moderateScale(25),
+    marginTop: verticalScale(35),
   },
 });
