@@ -7,10 +7,10 @@ import Animated, {
 } from "react-native-reanimated";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { CircularButton } from "./components/circular-button";
-import { MainButton } from "./components/main-button";
-import { calculatePrecie } from "./utils/calculate-precie";
-import { openDatabase } from "./utils/open-db";
+import { CircularButton } from "./app/components/circular-button";
+import { MainButton } from "./app/components/main-button";
+import { calculatePrecie } from "./app/utils/calculate-precie";
+import { openDatabase } from "./app/utils/open-db";
 
 const db = openDatabase();
 

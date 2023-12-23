@@ -7,9 +7,9 @@ export default function Page() {
     <View style={styles.container}>
       <StatusBar style="auto" />
       <View>
-        <Text>main page</Text>
+        <Text>calculator page</Text>
       </View>
-      <NavBar screen="main" />
+      <NavBar screen="calculator" />
     </View>
   );
 }
