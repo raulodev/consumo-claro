@@ -49,8 +49,10 @@ export default function App() {
   });
 
   const handlerClick = (value: string) => {
+    console.log(value);
     if (kwh === "0") setKwhs(value);
     else if (kwh.length < 9) setKwhs(kwh + value);
+    
   };
 
   const handlerClear = () => {
