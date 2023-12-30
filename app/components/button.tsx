@@ -5,11 +5,17 @@ import {
   TouchableHighlightProps,
 } from "react-native";
 
+import {
+  verticalScale,
+  horizontalScale,
+  moderateScale,
+} from "../utils/metrics";
+
 interface ButtonProps extends TouchableHighlightProps {
   title: string;
 }
 
-export const MainButton: React.FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   title,
   onPress,
   style,
@@ -20,7 +26,6 @@ export const MainButton: React.FC<ButtonProps> = ({
       onPress={onPress}
       style={[styles.button, style]}
       activeOpacity={0.6}
-      underlayColor={"#0D63C6"}
       {...props}
     >
       <Text style={styles.buttonText}>{title}</Text>
@@ -30,16 +35,15 @@ export const MainButton: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#0070F0",
-    borderRadius: 8,
-    width: 300,
-    height: 45,
+    backgroundColor: "#59adff",
+    borderRadius: moderateScale(5),
+    height: verticalScale(45),
     alignItems: "center",
     justifyContent: "center",
   },
   buttonText: {
     color: "#fff",
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 17,
+    fontWeight: "600",
   },
 });

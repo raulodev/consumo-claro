@@ -8,7 +8,7 @@ import Animated, {
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { CircularButton } from "./app/components/circular-button";
-import { MainButton } from "./app/components/main-button";
+import { Button } from "./app/components/button";
 import { calculatePrecie } from "./app/utils/calculate-precie";
 import { openDatabase } from "./app/utils/open-db";
 
@@ -52,7 +52,6 @@ export default function App() {
     console.log(value);
     if (kwh === "0") setKwhs(value);
     else if (kwh.length < 9) setKwhs(kwh + value);
-    
   };
 
   const handlerClear = () => {
@@ -118,7 +117,7 @@ export default function App() {
 
       <View style={{ marginBottom: 60 }} />
 
-      <MainButton title="=" onPress={getToPay} />
+      <Button title="=" onPress={getToPay} />
 
       {isShowModal && (
         <Animated.View style={[styles.overlay, styleAnimationOverlay]}>
@@ -139,7 +138,7 @@ export default function App() {
               </Text>
               <Text style={styles.label}>$</Text>
             </View>
-            <MainButton
+            <Button
               title="="
               onPress={() => {
                 modalHeight.value = 0;
