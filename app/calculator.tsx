@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: moderateScale(10),
     justifyContent: "space-between",
   },
   calculator_container: {

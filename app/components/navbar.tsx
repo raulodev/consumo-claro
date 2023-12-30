@@ -26,7 +26,7 @@ export const NavBar: React.FC<NavBarProps> = ({ screen }) => {
           style={screen === "main" ? styles.btn_active : styles.btn}
         >
           <Ionicons
-            name="home"
+            name="analytics"
             size={icon_size}
             color={screen === "main" ? icon_color_active : icon_color}
           />
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(30),
     paddingVertical: verticalScale(10),
     backgroundColor: "#59adff",
-    borderRadius: moderateScale(5),
   },
 
   btn_active: {
