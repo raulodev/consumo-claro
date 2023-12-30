@@ -1,9 +1,11 @@
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { verticalScale, horizontalScale, moderateScale } from "./utils/metrics";
 import { NavBar } from "./components/navbar";
 import { FloatingButton } from "./components/floating-button";
+import { NewReadModal } from "./components/modal";
 
 const list_counters = [
   // {
@@ -13,11 +15,17 @@ const list_counters = [
 ];
 
 export default function Page() {
+  const [isShowModal, setShowModal] = useState(false);
+
+  const handlerModal = (value: boolean) => {
+    setShowModal(value);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.counters_container}>
-        {!list_counters.length && <NoCounteres />}
+        {!list_counters.length && <NoReadings />}
 
         <FloatingButton
           style={{
@@ -25,16 +33,18 @@ export default function Page() {
             bottom: moderateScale(20),
             right: moderateScale(20),
           }}
+          onPress={() => setShowModal(true)}
         >
           <Ionicons name="add" color="white" size={moderateScale(24)} />
         </FloatingButton>
       </View>
       <NavBar screen="main" />
+      <NewReadModal setIsShow={handlerModal} isShow={isShowModal} />
     </View>
   );
 }
 
-function NoCounteres() {
+function NoReadings() {
   return (
     <View
       style={{

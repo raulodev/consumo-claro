@@ -6,8 +6,15 @@ export default function Page() {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <View>
-        <Text>settings page</Text>
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          flex: 1,
+        }}
+      >
+        <Text>Settings</Text>
+        <Text>v1.0.0</Text>
       </View>
       <NavBar screen="settings" />
     </View>
