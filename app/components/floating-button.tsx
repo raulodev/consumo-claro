@@ -18,7 +18,7 @@ export const FloatingButton: React.FC<TouchableHighlightProps> = ({
     <TouchableHighlight
       onPress={onPress}
       style={[styles.button, style]}
-      activeOpacity={0.6}
+      underlayColor={"#3792EC"}
       {...props}
     ></TouchableHighlight>
   );
@@ -27,8 +27,8 @@ export const FloatingButton: React.FC<TouchableHighlightProps> = ({
 const styles = StyleSheet.create({
   button: {
     borderRadius: 50,
-    width: horizontalScale(50),
-    height: verticalScale(50),
+    width: horizontalScale(55),
+    height: verticalScale(55),
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#59adff",

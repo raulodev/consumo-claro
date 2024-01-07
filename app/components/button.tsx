@@ -25,7 +25,7 @@ export const Button: React.FC<ButtonProps> = ({
     <TouchableHighlight
       onPress={onPress}
       style={[styles.button, style]}
-      activeOpacity={0.6}
+      underlayColor={"#3792EC"}
       {...props}
     >
       <Text style={styles.buttonText}>{title}</Text>

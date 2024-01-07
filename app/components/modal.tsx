@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, ViewProps, TextInput } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ViewProps,
+  TextInput,
+  Keyboard,
+} from "react-native";
 import { Button } from "./button";
 import {
   verticalScale,
@@ -10,15 +17,24 @@ import {
 interface NewReadModalProps extends ViewProps {
   setIsShow: (value: boolean) => void;
   isShow: boolean;
+  onAddReading: (read: number) => void;
 }
 
 export const NewReadModal: React.FC<NewReadModalProps> = ({
   style,
-  setIsShow,
   isShow,
+  onAddReading,
+  setIsShow,
   ...props
 }) => {
   const [reading, setReading] = useState<string>("");
+  const inputRef = useRef<TextInput | null>(null);
+
+  const reset = () => {
+    Keyboard.dismiss();
+    setReading("");
+    setIsShow(false);
+  };
 
   return (
     <View
@@ -31,13 +47,11 @@ export const NewReadModal: React.FC<NewReadModalProps> = ({
       ]}
       {...props}
     >
-      <View
-        style={styles.touchClose}
-        onTouchStart={() => setIsShow(false)}
-      ></View>
+      <View style={styles.touchClose} onTouchStart={reset}></View>
       <View style={styles.modal}>
         <Text style={styles.label}>Lectura del Metrocontador</Text>
         <TextInput
+          ref={inputRef}
           style={styles.input}
           keyboardType="numeric"
           onChangeText={(text) => setReading(text)}
@@ -45,12 +59,24 @@ export const NewReadModal: React.FC<NewReadModalProps> = ({
           cursorColor={"#424242"}
           selectionColor={"rgba(0,0,0,0.1)"}
           placeholder="Escribe aquí"
+          // onLayout={() => inputRef.current?.focus()} // FIXME
+          onSubmitEditing={() => {
+            onAddReading(Number(reading));
+            reset();
+          }}
         />
-        <Button title="OK" />
+        <Button
+          title="OK"
+          onPress={() => {
+            onAddReading(Number(reading));
+            reset();
+          }}
+        />
         <Button
           title="Cancelar"
           style={{ backgroundColor: "#424242" }}
-          onPress={() => setIsShow(false)}
+          underlayColor={"#212121"}
+          onPress={() => reset()}
         />
       </View>
     </View>
@@ -82,7 +108,8 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(5),
     color: "#757575",
     fontSize: moderateScale(18),
-    paddingHorizontal: moderateScale(10),
+    paddingHorizontal: horizontalScale(10), // FIXME
+    paddingVertical: 0,
   },
   label: {
     color: "#757575",
