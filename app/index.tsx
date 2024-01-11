@@ -119,8 +119,7 @@ export default function Page() {
             />
           )}
         </View>
-        {!readingList.length && <NoReadings />}
-        {readingList.length >= 1 && (
+        {readingList.length >= 1 ? (
           <ScrollView>
             {readingList.map((el, index, array) => (
               <ReadingCard
@@ -134,6 +133,8 @@ export default function Page() {
               />
             ))}
           </ScrollView>
+        ) : (
+          <NoReadings />
         )}
 
         <FloatingButton

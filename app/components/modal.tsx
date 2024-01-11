@@ -50,21 +50,23 @@ export const NewReadModal: React.FC<NewReadModalProps> = ({
       <View style={styles.touchClose} onTouchStart={reset}></View>
       <View style={styles.modal}>
         <Text style={styles.label}>Lectura del Metrocontador</Text>
-        <TextInput
-          ref={inputRef}
-          style={styles.input}
-          keyboardType="numeric"
-          onChangeText={(text) => setReading(text)}
-          value={reading}
-          cursorColor={"#424242"}
-          selectionColor={"rgba(0,0,0,0.1)"}
-          placeholder="Escribe aquí"
-          // onLayout={() => inputRef.current?.focus()} // FIXME
-          onSubmitEditing={() => {
-            onAddReading(Number(reading));
-            reset();
-          }}
-        />
+        <View style={styles.container_input}>
+          <TextInput
+            ref={inputRef}
+            style={styles.input}
+            keyboardType="numeric"
+            onChangeText={(text) => setReading(text)}
+            value={reading}
+            cursorColor={"#424242"}
+            selectionColor={"rgba(0,0,0,0.1)"}
+            placeholder="Escribe aquí"
+            // onLayout={() => inputRef.current?.focus()} // FIXME
+            onSubmitEditing={() => {
+              onAddReading(Number(reading));
+              reset();
+            }}
+          />
+        </View>
         <Button
           title="OK"
           onPress={() => {
@@ -102,14 +104,18 @@ const styles = StyleSheet.create({
     height: "50%",
   },
   input: {
+    width: "100%",
+    color: "#757575",
+    fontSize: moderateScale(18),
+  },
+  container_input: {
     height: verticalScale(45),
     borderColor: "#757575",
     borderWidth: 0.5,
     borderRadius: moderateScale(5),
-    color: "#757575",
-    fontSize: moderateScale(18),
-    paddingHorizontal: horizontalScale(10), // FIXME
-    paddingVertical: 0,
+    alignItems: "center",
+    flexDirection: "row",
+    paddingHorizontal: horizontalScale(6),
   },
   label: {
     color: "#757575",
