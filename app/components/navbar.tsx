@@ -50,7 +50,7 @@ export const NavBar: React.FC<NavBarProps> = ({ screen }) => {
           style={screen === "settings" ? styles.btn_active : styles.btn}
         >
           <Ionicons
-            name="settings"
+            name="compass"
             size={icon_size}
             color={screen === "settings" ? icon_color_active : icon_color}
           />
