@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.raulodev.ConsumoClaro"
+      "package": "com.raulodev.consumoclaro"
     },
     "extra": {
       "eas": {
@@ -28,6 +28,6 @@
       }
     },
     "plugins": ["expo-router"],
-    "scheme": "com.raulodev.ConsumoClaro"
+    "scheme": "com.raulodev.consumoclaro"
   }
 }

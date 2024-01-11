@@ -6,7 +6,7 @@ import {
   ViewProps,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Button } from "./button";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import {
   verticalScale,
   horizontalScale,
@@ -49,23 +49,30 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
     if (!prevReading) setConsumption("Primera lectura");
     else {
       const precie = calculatePrecie(`${reading - prevReading}`);
-      setConsumption(`$${precie}`);
+      setConsumption(`+ $${precie}`);
     }
   }, [prevReading, date, isSelected]);
 
   return (
     <TouchableWithoutFeedback onLongPress={() => onDelete(idReading)}>
-      <View
-        style={[
-          styles.card,
-          {
-            backgroundColor: isSelected
-              ? "#0d47a1"
-              : styles.card.backgroundColor,
-          },
-        ]}
-        {...props}
-      >
+      <View style={styles.card} {...props}>
+        {isSelected && (
+          <View style={styles.overlay}>
+            <View
+              style={{
+                position: "absolute",
+                right: 10,
+                top: 10,
+              }}
+            >
+              <Ionicons
+                name="checkmark-circle"
+                color="white"
+                size={moderateScale(24)}
+              />
+            </View>
+          </View>
+        )}
         <View style={styles.body}>
           <Text
             style={{
@@ -104,19 +111,29 @@ const styles = StyleSheet.create({
     height: verticalScale(120),
     marginHorizontal: horizontalScale(10),
     marginTop: verticalScale(10),
-    backgroundColor: "#59adff",
-    gap: moderateScale(20),
-    borderRadius: moderateScale(5),
   },
   body: {
-    flex: 1,
+    height: "65%",
+    backgroundColor: "#59adff",
     padding: moderateScale(10),
+    borderTopLeftRadius: moderateScale(5),
+    borderTopRightRadius: moderateScale(5),
   },
   footer: {
-    height: verticalScale(40),
+    height: "35%",
     backgroundColor: "#3792EC",
     padding: moderateScale(10),
     borderBottomLeftRadius: moderateScale(5),
     borderBottomRightRadius: moderateScale(5),
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    zIndex: 10,
+    backgroundColor: "rgba(0,0,0,0.15)",
+    borderRadius: moderateScale(5),
   },
 });
