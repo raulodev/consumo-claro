@@ -10,7 +10,7 @@ import {
 } from "../utils/metrics";
 
 interface NavBarProps {
-  screen: "main" | "calculator" | "settings";
+  screen: "main" | "calculator" | "faqs";
 }
 
 export const NavBar: React.FC<NavBarProps> = ({ screen }) => {
@@ -46,13 +46,13 @@ export const NavBar: React.FC<NavBarProps> = ({ screen }) => {
       </View>
       <View>
         <Link
-          href="/settings"
-          style={screen === "settings" ? styles.btn_active : styles.btn}
+          href="/faqs"
+          style={screen === "faqs" ? styles.btn_active : styles.btn}
         >
           <Ionicons
             name="compass"
             size={icon_size}
-            color={screen === "settings" ? icon_color_active : icon_color}
+            color={screen === "faqs" ? icon_color_active : icon_color}
           />
         </Link>
       </View>

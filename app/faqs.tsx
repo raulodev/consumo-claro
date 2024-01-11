@@ -112,7 +112,7 @@ export default function Page() {
           Versión: 1.0.0
         </Text>
       </View>
-      <NavBar screen="settings" />
+      <NavBar screen="faqs" />
     </View>
   );
 }
