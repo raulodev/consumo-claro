@@ -112,7 +112,7 @@ export default function Page() {
               },
             ]}
           >
-            {toPay ? `$ ${toPay}` : "Total a pagar"}
+            {toPay ? `${toPay} $` : "Total a Pagar"}
           </Text>
 
           {toDelete.length > 0 && (
@@ -220,18 +220,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   info_container: {
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     height: verticalScale(70),
     paddingVertical: verticalScale(10),
     paddingHorizontal: horizontalScale(20),
+    borderBottomWidth: 0.5,
+    borderBottomColor: "#bdbdbd",
   },
   text: {
     color: "#757575",
-    fontSize: moderateScale(20),
-    fontWeight: "600",
+    fontSize: moderateScale(22),
+    fontWeight: "500",
     textAlign: "center",
   },
 });

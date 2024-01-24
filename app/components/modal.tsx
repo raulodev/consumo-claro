@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,6 +13,7 @@ import {
   horizontalScale,
   moderateScale,
 } from "../utils/metrics";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface NewReadModalProps extends ViewProps {
   setIsShow: (value: boolean) => void;
@@ -51,6 +52,11 @@ export const NewReadModal: React.FC<NewReadModalProps> = ({
       <View style={styles.modal}>
         <Text style={styles.label}>Lectura del Metrocontador</Text>
         <View style={styles.container_input}>
+          <Ionicons
+            name="reader-outline"
+            color="#757575"
+            size={moderateScale(20)}
+          />
           <TextInput
             ref={inputRef}
             style={styles.input}
@@ -115,8 +121,9 @@ const styles = StyleSheet.create({
     borderColor: "#757575",
     borderWidth: 0.5,
     borderRadius: moderateScale(5),
-    alignItems: "center",
     flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
     paddingHorizontal: horizontalScale(6),
   },
   label: {

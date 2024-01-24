@@ -14,7 +14,7 @@ interface NavBarProps {
 }
 
 export const NavBar: React.FC<NavBarProps> = ({ screen }) => {
-  const icon_size = moderateScale(20);
+  const icon_size = moderateScale(24);
   const icon_color_active = styles.container.backgroundColor;
   const icon_color = "white";
 
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: horizontalScale(100),
     paddingVertical: verticalScale(10),
     backgroundColor: "#59adff",
-    borderTopWidth: 1,
+    borderTopWidth: 0.5,
     borderTopColor: "#f5f5f5",
   },
 

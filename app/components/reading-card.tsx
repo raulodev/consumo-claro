@@ -49,7 +49,7 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
     if (!prevReading) setConsumption("Primera lectura");
     else {
       const precie = calculatePrecie(`${reading - prevReading}`);
-      setConsumption(`+ $${precie}`);
+      setConsumption(`+ ${precie}$`);
     }
   }, [prevReading, date, isSelected]);
 
@@ -74,29 +74,56 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
           </View>
         )}
         <View style={styles.body}>
-          <Text
+          <View
             style={{
-              color: "#757575",
-              fontWeight: "600",
-              fontSize: moderateScale(20),
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
             }}
           >
-            {currentDate}
-          </Text>
-          <Text
+            <Ionicons
+              name="calendar"
+              color="#757575"
+              size={moderateScale(20)}
+            />
+            <Text
+              style={{
+                color: "#757575",
+                fontWeight: "600",
+                fontSize: moderateScale(20),
+              }}
+            >
+              {currentDate}
+            </Text>
+          </View>
+          <View
             style={{
-              color: "#757575",
-              fontSize: moderateScale(18),
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
             }}
           >
-            {reading} kwh
-          </Text>
+            <Ionicons
+              name="reader-outline"
+              color="#757575"
+              size={moderateScale(18)}
+            />
+            <Text
+              style={{
+                color: "#757575",
+                fontSize: moderateScale(18),
+              }}
+            >
+              {reading} kwh
+            </Text>
+          </View>
         </View>
         <View style={styles.footer}>
           <Text
             style={{
               color: "#fff",
               fontWeight: "400",
+              fontSize: moderateScale(16),
             }}
           >
             {consumption}
@@ -109,9 +136,10 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    height: verticalScale(120),
+    height: verticalScale(125),
     marginHorizontal: horizontalScale(10),
     marginTop: verticalScale(10),
+    shadowOffset: { width: 10, height: 10 },
   },
   body: {
     height: "65%",
@@ -126,8 +154,10 @@ const styles = StyleSheet.create({
   },
   footer: {
     height: "35%",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: horizontalScale(15),
     backgroundColor: "#59adff",
-    padding: moderateScale(10),
     borderLeftWidth: 0.25,
     borderRightWidth: 0.25,
     borderBottomWidth: 0.25,
