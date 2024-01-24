@@ -28,6 +28,7 @@ export const CircularButton: React.FC<ButtonProps> = ({
   return (
     <TouchableOpacity
       onPress={onPress}
+      activeOpacity={0.8}
       style={[styles.button, style]}
       {...props}
     >
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#E5E5E5",
     padding: moderateScale(10),
-    borderRadius: 50,
+    borderRadius: moderateScale(70 / 2),
     width: horizontalScale(70),
     height: verticalScale(70),
     alignItems: "center",

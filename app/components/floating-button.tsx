@@ -26,7 +26,7 @@ export const FloatingButton: React.FC<TouchableHighlightProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 50,
+    borderRadius: moderateScale(55 / 2),
     width: horizontalScale(55),
     height: verticalScale(55),
     alignItems: "center",

@@ -95,13 +95,15 @@ const styles = StyleSheet.create({
     left: 0,
   },
   modal: {
-    height: "35%",
+    height: "70%",
     backgroundColor: "#fff",
     padding: moderateScale(20),
     gap: moderateScale(20),
+    borderTopLeftRadius: moderateScale(10),
+    borderTopRightRadius: moderateScale(10),
   },
   touchClose: {
-    height: "65%",
+    height: "30%",
   },
   input: {
     width: "100%",

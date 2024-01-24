@@ -44,18 +44,6 @@ export const NavBar: React.FC<NavBarProps> = ({ screen }) => {
           />
         </Link>
       </View>
-      <View>
-        <Link
-          href="/faqs"
-          style={screen === "faqs" ? styles.btn_active : styles.btn}
-        >
-          <Ionicons
-            name="compass"
-            size={icon_size}
-            color={screen === "faqs" ? icon_color_active : icon_color}
-          />
-        </Link>
-      </View>
     </View>
   );
 };
@@ -66,7 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: horizontalScale(30),
+    paddingHorizontal: horizontalScale(100),
     paddingVertical: verticalScale(10),
     backgroundColor: "#59adff",
     borderTopWidth: 1,
