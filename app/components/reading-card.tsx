@@ -67,7 +67,7 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
             >
               <Ionicons
                 name="checkmark-circle"
-                color="white"
+                color="#3792EC"
                 size={moderateScale(24)}
               />
             </View>
@@ -76,7 +76,7 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
         <View style={styles.body}>
           <Text
             style={{
-              color: "white",
+              color: "#757575",
               fontWeight: "600",
               fontSize: moderateScale(20),
             }}
@@ -85,7 +85,7 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
           </Text>
           <Text
             style={{
-              color: "white",
+              color: "#757575",
               fontSize: moderateScale(18),
             }}
           >
@@ -95,7 +95,8 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
         <View style={styles.footer}>
           <Text
             style={{
-              color: "white",
+              color: "#fff",
+              fontWeight: "400",
             }}
           >
             {consumption}
@@ -114,15 +115,24 @@ const styles = StyleSheet.create({
   },
   body: {
     height: "65%",
-    backgroundColor: "#59adff",
     padding: moderateScale(10),
+    backgroundColor: "#fff",
+    borderTopWidth: 0.25,
+    borderLeftWidth: 0.25,
+    borderRightWidth: 0.25,
+    borderColor: "#bdbdbd",
     borderTopLeftRadius: moderateScale(5),
     borderTopRightRadius: moderateScale(5),
   },
   footer: {
     height: "35%",
-    backgroundColor: "#3792EC",
+    backgroundColor: "#59adff",
     padding: moderateScale(10),
+    borderLeftWidth: 0.25,
+    borderRightWidth: 0.25,
+    borderBottomWidth: 0.25,
+    borderTopWidth: 0.25,
+    borderColor: "#59adff",
     borderBottomLeftRadius: moderateScale(5),
     borderBottomRightRadius: moderateScale(5),
   },

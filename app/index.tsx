@@ -59,6 +59,10 @@ export default function Page() {
     setDelete([]);
   };
 
+  const handlerDeselect = () => {
+    setDelete([]);
+  };
+
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
@@ -85,7 +89,7 @@ export default function Page() {
     <View style={styles.container}>
       <StatusBar
         style="auto"
-        backgroundColor={toDelete.length > 0 ? "#3792EC" : "#59adff"}
+        backgroundColor={toDelete.length > 0 ? "#3792EC" : undefined}
       />
       <View style={styles.readings_container}>
         <View
@@ -96,6 +100,7 @@ export default function Page() {
                 toDelete.length > 0
                   ? "#3792EC"
                   : styles.info_container.backgroundColor,
+              justifyContent: toDelete.length > 0 ? "space-between" : "center",
             },
           ]}
         >
@@ -111,12 +116,36 @@ export default function Page() {
           </Text>
 
           {toDelete.length > 0 && (
-            <Ionicons
-              name="trash"
-              color="white"
-              size={moderateScale(24)}
-              onPress={handlerDelete}
-            />
+            <>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 20,
+                }}
+              >
+                <Ionicons
+                  name="close"
+                  color="white"
+                  size={moderateScale(28)}
+                  onPress={handlerDeselect}
+                />
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: moderateScale(20),
+                  }}
+                >
+                  {toDelete.length}
+                </Text>
+              </View>
+              <Ionicons
+                name="trash"
+                color="white"
+                size={moderateScale(24)}
+                onPress={handlerDelete}
+              />
+            </>
           )}
         </View>
         {readingList.length >= 1 ? (
@@ -170,7 +199,7 @@ function NoReadings() {
       <Text
         style={{
           color: "#757575",
-          fontSize: moderateScale(20),
+          fontSize: moderateScale(18),
           fontWeight: "600",
           textAlign: "center",
         }}
@@ -184,24 +213,23 @@ function NoReadings() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f5f5",
     justifyContent: "space-between",
   },
   readings_container: {
     flex: 1,
   },
   info_container: {
+    backgroundColor: "#fff",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    padding: moderateScale(10),
-    height: verticalScale(50),
-    backgroundColor: "#59adff",
-    borderBottomWidth: 1,
-    borderBottomColor: "white",
+    height: verticalScale(70),
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: horizontalScale(20),
   },
   text: {
-    color: "#fff",
+    color: "#757575",
     fontSize: moderateScale(20),
     fontWeight: "600",
     textAlign: "center",

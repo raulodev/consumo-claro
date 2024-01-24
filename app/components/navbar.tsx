@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(10),
     backgroundColor: "#59adff",
     borderTopWidth: 1,
-    borderTopColor: "white",
+    borderTopColor: "#f5f5f5",
   },
 
   btn_active: {

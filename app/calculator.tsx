@@ -21,7 +21,7 @@ export default function Page() {
       newKwh = value;
       setKwhs(newKwh);
       getToPay(newKwh);
-    } else if (kwh.length < 9) {
+    } else if (kwh.length < 12) {
       newKwh = kwh + value;
       setKwhs(newKwh);
       getToPay(newKwh);
@@ -99,9 +99,9 @@ export default function Page() {
               {
                 textAlign: "left",
                 fontSize:
-                  precie.toString().length < 9
+                  precie.toString().length < 12
                     ? styles.display_text.fontSize
-                    : moderateScale(38),
+                    : moderateScale(32),
               },
             ]}
             onPress={reset}
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   display_text: {
     flex: 1,
     color: "#757575",
-    fontSize: moderateScale(48),
+    fontSize: moderateScale(40),
     fontWeight: "700",
     paddingHorizontal: horizontalScale(10),
     textAlign: "center",
