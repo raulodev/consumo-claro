@@ -1,7 +1,7 @@
-const { getDefaultConfig } = require('expo/metro-config');
+/* eslint-env node */
+const { getDefaultConfig } = require("expo/metro-config");
 
-const defaultConfig = getDefaultConfig(__dirname);
+/** @type {import('expo/metro-config').MetroConfig} */
+const config = getDefaultConfig(__dirname);
 
-defaultConfig.resolver.assetExts.push('db');
-
-module.exports = defaultConfig;
+module.exports = config;

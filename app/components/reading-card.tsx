@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ViewProps,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { StyleSheet, Text, View, ViewProps, TouchableWithoutFeedback } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {
-  verticalScale,
-  horizontalScale,
-  moderateScale,
-} from "../utils/metrics";
+import { verticalScale, horizontalScale, moderateScale } from "../utils/metrics";
 import { getMonth } from "../utils/get-month";
 import { calculatePrecie } from "../utils/calculate-precie";
 
@@ -63,13 +53,8 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
                 position: "absolute",
                 right: 10,
                 top: 10,
-              }}
-            >
-              <Ionicons
-                name="checkmark-circle"
-                color="#3792EC"
-                size={moderateScale(24)}
-              />
+              }}>
+              <Ionicons name="checkmark-circle" color="#3792EC" size={moderateScale(24)} />
             </View>
           </View>
         )}
@@ -79,20 +64,14 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
               flexDirection: "row",
               alignItems: "center",
               gap: 5,
-            }}
-          >
-            <Ionicons
-              name="calendar"
-              color="#757575"
-              size={moderateScale(20)}
-            />
+            }}>
+            <Ionicons name="calendar" color="#757575" size={moderateScale(20)} />
             <Text
               style={{
                 color: "#757575",
                 fontWeight: "600",
                 fontSize: moderateScale(20),
-              }}
-            >
+              }}>
               {currentDate}
             </Text>
           </View>
@@ -101,19 +80,13 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
               flexDirection: "row",
               alignItems: "center",
               gap: 5,
-            }}
-          >
-            <Ionicons
-              name="reader-outline"
-              color="#757575"
-              size={moderateScale(18)}
-            />
+            }}>
+            <Ionicons name="reader-outline" color="#757575" size={moderateScale(18)} />
             <Text
               style={{
                 color: "#757575",
                 fontSize: moderateScale(18),
-              }}
-            >
+              }}>
               {reading} kwh
             </Text>
           </View>
@@ -124,8 +97,7 @@ export const ReadingCard: React.FC<ReadingCardProps> = ({
               color: "#fff",
               fontWeight: "400",
               fontSize: moderateScale(16),
-            }}
-          >
+            }}>
             {consumption}
           </Text>
         </View>

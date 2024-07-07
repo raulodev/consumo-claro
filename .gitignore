@@ -9,6 +9,7 @@ dist/
 web-build/
 credentials.json
 credentials
+pnpm-lock.yaml
 
 # Native
 *.orig.*
