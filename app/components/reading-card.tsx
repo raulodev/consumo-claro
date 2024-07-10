@@ -1,6 +1,6 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ViewProps, TouchableWithoutFeedback } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { verticalScale, horizontalScale, moderateScale } from "../utils/metrics";
 import { getMonth } from "../utils/get-month";
 import { calculatePrecie } from "../utils/calculate-precie";

@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: palette.successLight,
     height: verticalScale(80),
-    elevation: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -36,7 +35,5 @@ const styles = StyleSheet.create({
   logo: {
     width: horizontalScale(60),
     height: "100%",
-    // borderColor: "red",
-    // borderWidth: 1,
   },
 });

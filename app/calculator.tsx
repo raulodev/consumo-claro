@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Vibration } from "react-native";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
 
 import { Button } from "./components/button";
@@ -105,7 +105,16 @@ export const Calculator: React.FC<CalculatorProps> = ({ onClose }) => {
             }}
           />
           <Button circle title="0" type="success" onPress={() => handlerClick("0")} />
-          <Button circle type="warning" icon="backspace" onPress={clear} onLongPress={reset} />
+          <Button
+            circle
+            type="warning"
+            icon="backspace"
+            onPress={clear}
+            onLongPress={() => {
+              Vibration.vibrate(100);
+              reset();
+            }}
+          />
         </View>
       </View>
     </Animated.View>
