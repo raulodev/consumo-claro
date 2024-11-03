@@ -14,7 +14,15 @@ interface ButtonProps extends PressableProps {
     | "error"
     | "successLighter"
     | "successLight";
-  icon?: "camera" | "close" | "backspace" | "settings";
+  icon?:
+    | "camera"
+    | "close"
+    | "backspace"
+    | "settings"
+    | "return-up-back"
+    | "refresh-outline"
+    | "flash"
+    | "flash-off";
   iconSize?: number;
   style?: ViewStyle;
   circle?: boolean;
