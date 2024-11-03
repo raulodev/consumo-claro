@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, FlatList } from "react-native";
+import { useCameraPermissions } from "expo-camera";
 import registerRootComponent from "expo/build/launch/registerRootComponent";
 import Calculator from "./src/components/calculator";
 import { FloatingButton } from "./src/components/floating-buttons";
@@ -9,6 +10,7 @@ import { Button } from "./src/components/button";
 import { Card } from "./src/components/card";
 import { TopBar } from "./src/components/top-bar";
 import { ListEmpty } from "./src/components/list-empty";
+import { Camera } from "./src/components/camera";
 import { palette } from "./src/utils/colors";
 import { moderateScale } from "./src/utils/metrics";
 import {
@@ -29,8 +31,10 @@ import { calculateElectricityCost } from "./src/utils/tariff";
 type modals = "calculator" | "add-register";
 
 export default function App() {
+  const [permission, requestPermission] = useCameraPermissions();
   const [showModal, setShowModal] = useState<modals>();
   const [selectQuick, setSelectQuick] = useState<boolean>(false);
+  const [showCamera, setShowCamera] = useState<boolean>(false);
   const [recordToUpdate, setRecordToUpdate] = useState<Register>();
   const [registers, setRegisters] = useState<Register[]>([]);
   const [meterCounter, setMeterCounter] = useState<string | undefined>("");
@@ -78,6 +82,8 @@ export default function App() {
       setSelected(allIds);
     }
   };
+
+  if (showCamera) return <Camera back={() => setShowCamera(false)} />;
 
   return (
     <View style={styles.container}>
@@ -161,7 +167,21 @@ export default function App() {
               autoFocus
             />
 
-            <Button circle icon="camera" type="successLight" onPress={() => {}} />
+            <Button
+              circle
+              icon="camera"
+              type="successLight"
+              onPress={async () => {
+                if (permission && !permission.granted) {
+                  const response = await requestPermission();
+                  if (response.granted) {
+                    setShowCamera(true);
+                  }
+                } else {
+                  setShowCamera(true);
+                }
+              }}
+            />
           </View>
 
           <Button
