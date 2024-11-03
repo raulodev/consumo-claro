@@ -70,16 +70,30 @@ export default function App() {
     }
   };
 
+  const restartSelect = () => {
+    if (selected.length === registers.length) {
+      setSelected([]);
+    } else {
+      const allIds = registers.map((item) => item.id);
+      setSelected(allIds);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={palette.successLight} style="light" />
-      <TopBar count={cost} />
+      <TopBar count={cost} rightAction={restartSelect} />
 
       <FlatList
         ListEmptyComponent={<ListEmpty />}
         data={registers}
         renderItem={({ item }) => (
-          <Card register={item} onSelect={handlerAddToDelete} selectQuick={selectQuick} />
+          <Card
+            register={item}
+            onSelect={handlerAddToDelete}
+            selectQuick={selectQuick}
+            selected={selected}
+          />
         )}
         keyExtractor={(item) => item.id.toString()}
         ListFooterComponent={<View style={{ height: 40 }}></View>}

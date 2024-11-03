@@ -11,23 +11,22 @@ interface CardProps {
   register: Register;
   onSelect: (id: number) => void;
   selectQuick?: boolean;
+  selected: number[];
 }
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
-export const Card: React.FC<CardProps> = ({ register, onSelect, selectQuick }) => {
+export const Card: React.FC<CardProps> = ({ register, onSelect, selectQuick, selected }) => {
   const [currentDate, setDate] = useState<string>();
-  const [pressed, setPressed] = useState<boolean>(false);
 
   useEffect(() => {
     const date = new Date();
     date.setTime(register.date);
-    setDate(`${date.getDate()} ${month(date.getMonth())}`);
+    setDate(`${date.getDate()} ${month(date.getMonth())}, ${date.getHours()}:${date.getMinutes()}`);
   }, []);
 
   const select = (vibrate = true) => {
     onSelect(register.id);
-    setPressed(!pressed);
     if (vibrate) Vibration.vibrate(50);
   };
 
@@ -71,10 +70,9 @@ export const Card: React.FC<CardProps> = ({ register, onSelect, selectQuick }) =
               </View>
             </View>
             <View>
-              {pressed && (
+              {selected.includes(register.id) && (
                 <AnimatedIcon
                   entering={StretchInY.springify(300)}
-                  exiting={StretchOutY.duration(100)}
                   name="checkmark-circle"
                   size={28}
                   color={palette.successLight}
