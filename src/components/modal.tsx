@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 
   modal: {
     height: "70%",
-    backgroundColor: palette.accents_2,
+    backgroundColor: palette.background,
     borderTopLeftRadius: moderateScale(10),
     borderTopRightRadius: moderateScale(10),
   },
