@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable, Vibration } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Animated, { SlideInRight } from "react-native-reanimated";
+import Animated, { SlideInRight, StretchInY, StretchOutY } from "react-native-reanimated";
 import { Register } from "../lib/interfaces";
 import { palette } from "../utils/colors";
 import { verticalScale, moderateScale, horizontalScale } from "../utils/metrics";
@@ -12,6 +12,8 @@ interface CardProps {
   onSelect: (id: number) => void;
   selectQuick?: boolean;
 }
+
+const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
 export const Card: React.FC<CardProps> = ({ register, onSelect, selectQuick }) => {
   const [currentDate, setDate] = useState<string>();
@@ -70,7 +72,13 @@ export const Card: React.FC<CardProps> = ({ register, onSelect, selectQuick }) =
             </View>
             <View>
               {pressed && (
-                <Ionicons name="checkmark-circle" size={28} color={palette.successLight} />
+                <AnimatedIcon
+                  entering={StretchInY.springify(300)}
+                  exiting={StretchOutY.duration(100)}
+                  name="checkmark-circle"
+                  size={28}
+                  color={palette.successLight}
+                />
               )}
             </View>
           </View>
