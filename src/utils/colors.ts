@@ -1,5 +1,3 @@
-// take color from https://geist-ui.dev/en-us/guide/colors
-
 export const palette = {
   // Accents
   background: "#FFF",
@@ -14,7 +12,7 @@ export const palette = {
   foreground: "#000000",
   // Success
   successLighter: "#d3e5ff",
-  successLight: "#3291ff",
+  successLight: "#59adff",
   success: "#0070f3",
   successDark: "#0761d1",
   // Error ,
