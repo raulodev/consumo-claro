@@ -5,7 +5,7 @@ import Animated, { FadeInRight, FadeOutRight } from "react-native-reanimated";
 import { palette } from "../utils/colors";
 
 interface FloatingButtonProps extends PressableProps {
-  icon?: "add" | "calculator" | "trash";
+  icon?: "add" | "calculator" | "trash" | "pencil";
   iconColor?: string;
   animate?: boolean;
   style?: ViewStyle;
@@ -25,7 +25,7 @@ export const FloatingButton: React.FC<FloatingButtonProps> = ({
       <Pressable
         style={({ pressed }) => [styles.button, pressed && styles.pressed, style]}
         {...props}>
-        <Ionicons name={icon} color={iconColor || "black"} size={28} />
+        <Ionicons name={icon} color={iconColor || palette.accents_7} size={28} />
       </Pressable>
     </Animated.View>
   );
