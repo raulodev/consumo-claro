@@ -1,7 +1,5 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
-
 import { palette } from "../utils/colors";
 import { verticalScale, moderateScale } from "../utils/metrics";
 
@@ -12,12 +10,6 @@ interface TopBarProps {
 export const TopBar: React.FC<TopBarProps> = ({ count = 0 }) => {
   return (
     <View style={styles.container}>
-      {/* <MaterialIcons
-        name="settings"
-        size={20}
-        color={palette.background}
-        style={{ position: "absolute", left: 20 }}
-      /> */}
       <Text style={styles.text}>{count} $</Text>
     </View>
   );
