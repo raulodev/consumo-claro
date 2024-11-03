@@ -11,7 +11,13 @@ import { TopBar } from "./src/components/top-bar";
 import { ListEmpty } from "./src/components/list-empty";
 import { palette } from "./src/utils/colors";
 import { moderateScale } from "./src/utils/metrics";
-import { insertRegister, createTables, getAllRegisters, deleteRegister } from "./src/lib/database";
+import {
+  insertRegister,
+  createTables,
+  getAllRegisters,
+  deleteRegister,
+  updateRegister,
+} from "./src/lib/database";
 import { Register } from "./src/lib/interfaces";
 import { calculateElectricityCost } from "./src/utils/tariff";
 
@@ -20,13 +26,15 @@ import { calculateElectricityCost } from "./src/utils/tariff";
 // 8- Guardar foto en la base de datos
 // 9- mostrar foto
 
+type modals = "calculator" | "add-register";
+
 export default function App() {
-  const [isCalculatorOpen, setCalculatorOpen] = useState<boolean>(false);
-  const [isAddRegisterOpen, setAddRegisterOpen] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<modals>();
   const [selectQuick, setSelectQuick] = useState<boolean>(false);
+  const [recordToUpdate, setRecordToUpdate] = useState<Register>();
   const [registers, setRegisters] = useState<Register[]>([]);
-  const [register, setRegister] = useState<string | undefined>("");
-  const [toDelete, setDelete] = useState<number[]>([]);
+  const [meterCounter, setMeterCounter] = useState<string | undefined>("");
+  const [selected, setSelected] = useState<number[]>([]);
   const [cost, setCost] = useState<number>(0);
 
   useEffect(() => {
@@ -50,15 +58,15 @@ export default function App() {
     }
     init();
 
-    if (toDelete.length > 0) setSelectQuick(true);
+    if (selected.length > 0) setSelectQuick(true);
     else setSelectQuick(false);
-  }, [toDelete, isAddRegisterOpen]);
+  }, [selected, showModal]);
 
   const handlerAddToDelete = (id: number) => {
-    if (!toDelete.includes(id)) {
-      setDelete([...toDelete, id]);
+    if (!selected.includes(id)) {
+      setSelected([...selected, id]);
     } else {
-      setDelete(toDelete.filter((item) => item !== id));
+      setSelected(selected.filter((item) => item !== id));
     }
   };
 
@@ -77,17 +85,30 @@ export default function App() {
         ListFooterComponent={<View style={{ height: 40 }}></View>}
       />
 
-      {toDelete.length > 0 && (
+      {selected.length == 1 && (
+        <FloatingButton
+          icon="pencil"
+          animate
+          style={{ bottom: moderateScale(260), right: moderateScale(20) }}
+          onPress={async () => {
+            setShowModal("add-register");
+            const editRegister = registers.filter((item) => item.id === selected[0]);
+            setRecordToUpdate(editRegister[0]);
+          }}
+        />
+      )}
+
+      {selected.length > 0 && (
         <FloatingButton
           icon="trash"
           iconColor={palette.error}
           animate
           style={{ bottom: moderateScale(180), right: moderateScale(20) }}
           onPress={async () => {
-            toDelete.forEach(async (id) => {
+            selected.forEach(async (id) => {
               await deleteRegister(id);
             });
-            setDelete([]);
+            setSelected([]);
             setSelectQuick(false);
           }}
         />
@@ -97,20 +118,20 @@ export default function App() {
         icon="calculator"
         animate={false}
         style={{ bottom: moderateScale(100), right: moderateScale(20) }}
-        onPress={() => setCalculatorOpen(true)}
+        onPress={() => setShowModal("calculator")}
       />
 
       <FloatingButton
         animate={false}
         style={{ bottom: moderateScale(20), right: moderateScale(20) }}
-        onPress={() => setAddRegisterOpen(!isAddRegisterOpen)}
+        onPress={() => setShowModal("add-register")}
       />
 
-      <Modal open={isCalculatorOpen} onAction={() => setCalculatorOpen(false)}>
+      <Modal open={showModal === "calculator"} onAction={() => setShowModal(undefined)}>
         <Calculator />
       </Modal>
 
-      <Modal open={isAddRegisterOpen} onAction={() => setAddRegisterOpen(!isAddRegisterOpen)}>
+      <Modal open={showModal === "add-register"} onAction={() => setShowModal(undefined)}>
         <View
           style={{ paddingHorizontal: moderateScale(15), marginTop: 20, gap: moderateScale(20) }}>
           <Text style={styles.label}>Agregar lectura</Text>
@@ -121,7 +142,8 @@ export default function App() {
               selectionColor={palette.accents_3}
               placeholder="1234..."
               style={styles.input}
-              onChangeText={(text) => setRegister(text)}
+              onChangeText={(text) => setMeterCounter(text)}
+              value={meterCounter}
               autoFocus
             />
 
@@ -129,33 +151,68 @@ export default function App() {
           </View>
 
           <Button
-            title="Guardar"
+            title={recordToUpdate ? "Actualizar" : "Guardar"}
             type="successLight"
             onPress={async () => {
-              if (register && register.length > 0) {
-                if (
-                  registers.length >= 1 &&
-                  Number(register) <= registers[registers.length - 1].read
-                )
-                  return;
+              if (meterCounter && meterCounter.length > 0) {
+                if (recordToUpdate) {
+                  // Evitar agregar un registro mayor al registro siguiente si existe
+                  // y menor al anterior si existe
 
-                const date = new Date();
+                  let prevRecord: Register | undefined;
+                  let nextRecord: Register | undefined;
 
-                await insertRegister(
-                  date.getDay(),
-                  date.getMonth(),
-                  date.getFullYear(),
-                  date.getTime(),
-                  Number(register),
-                );
+                  for (let index = 0; index < registers.length; index++) {
+                    const record = registers[index];
 
-                setRegister(undefined);
+                    if (record.id === recordToUpdate.id) {
+                      prevRecord = registers[index - 1];
+                      nextRecord = registers[index + 1];
+                    }
+                  }
 
-                setAddRegisterOpen(false);
+                  if (
+                    (prevRecord && prevRecord.read >= Number(meterCounter)) ||
+                    (nextRecord && nextRecord.read <= Number(meterCounter))
+                  ) {
+                    return;
+                  }
+
+                  await updateRegister(recordToUpdate.id, Number(meterCounter));
+                  setRecordToUpdate(undefined);
+                } else {
+                  // Evitar agregar un registro menor al anterior existente
+                  if (
+                    registers.length >= 1 &&
+                    Number(meterCounter) <= registers[registers.length - 1].read
+                  )
+                    return;
+
+                  const date = new Date();
+
+                  await insertRegister(
+                    date.getDay(),
+                    date.getMonth(),
+                    date.getFullYear(),
+                    date.getTime(),
+                    Number(meterCounter),
+                  );
+                }
+
+                setMeterCounter(undefined); // Restablecer el valor de la entrada
+                setShowModal(undefined);
               }
             }}
           />
-          <Button title="Cancelar" type="secondary" onPress={() => setAddRegisterOpen(false)} />
+          <Button
+            title="Cancelar"
+            type="secondary"
+            onPress={() => {
+              setShowModal(undefined);
+              setRecordToUpdate(undefined);
+              setMeterCounter(undefined);
+            }}
+          />
         </View>
       </Modal>
     </View>

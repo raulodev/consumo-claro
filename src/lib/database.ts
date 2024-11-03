@@ -26,6 +26,11 @@ export const insertRegister = async (
   );
 };
 
+export const updateRegister = async (id: number, read: number) => {
+  const db = await openDatabase();
+  db.execAsync(`UPDATE register SET  read = ${read} WHERE id = ${id}`);
+};
+
 export const deleteRegister = async (id: number) => {
   const db = await openDatabase();
   db.execAsync(`DELETE FROM register WHERE id = ${id}`);
