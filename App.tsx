@@ -11,6 +11,7 @@ import { Card } from "./src/components/card";
 import { TopBar } from "./src/components/top-bar";
 import { ListEmpty } from "./src/components/list-empty";
 import { Camera } from "./src/components/camera";
+import { Alert } from "./src/components/alert";
 import { palette } from "./src/utils/colors";
 import { moderateScale } from "./src/utils/metrics";
 import {
@@ -33,6 +34,10 @@ type modals = "calculator" | "add-register";
 export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
   const [showModal, setShowModal] = useState<modals>();
+  const [showAlert, setshowAlert] = useState<{ open: boolean; message: string }>({
+    open: false,
+    message: "",
+  });
   const [selectQuick, setSelectQuick] = useState<boolean>(false);
   const [showCamera, setShowCamera] = useState<boolean>(false);
   const [recordToUpdate, setRecordToUpdate] = useState<Register>();
@@ -76,18 +81,25 @@ export default function App() {
 
   const restartSelect = () => {
     if (selected.length === registers.length) {
-      setSelected([]);
+      setSelected((current) => []);
     } else {
       const allIds = registers.map((item) => item.id);
       setSelected(allIds);
     }
   };
 
-  if (showCamera) return <Camera back={() => setShowCamera(false)} />;
-
   return (
     <View style={styles.container}>
+      <Alert
+        message={showAlert.message}
+        open={showAlert.open}
+        onClose={() => {
+          setshowAlert({ ...showAlert, open: false, message: "" });
+        }}
+      />
+
       <StatusBar backgroundColor={palette.successLight} style="light" />
+
       <TopBar count={cost} rightAction={restartSelect} />
 
       <FlatList
@@ -97,7 +109,7 @@ export default function App() {
           <Card
             register={item}
             onSelect={handlerAddToDelete}
-            selectQuick={selectQuick}
+            isSelectQuick={selectQuick}
             selected={selected}
           />
         )}
@@ -152,102 +164,121 @@ export default function App() {
       </Modal>
 
       <Modal open={showModal === "add-register"} onAction={() => setShowModal(undefined)}>
-        <View
-          style={{ paddingHorizontal: moderateScale(15), marginTop: 20, gap: moderateScale(20) }}>
-          <Text style={styles.label}>Agregar lectura</Text>
-          <View style={{ flexDirection: "row", gap: 20 }}>
-            <TextInput
-              keyboardType="numeric"
-              cursorColor={palette.accents_7}
-              selectionColor={palette.accents_3}
-              placeholder="1234..."
-              style={styles.input}
-              onChangeText={(text) => setMeterCounter(text)}
-              value={meterCounter}
-              autoFocus
-            />
+        {showCamera ? (
+          <Camera back={() => setShowCamera(false)} /> // animar esto
+        ) : (
+          <View
+            style={{ paddingHorizontal: moderateScale(15), marginTop: 20, gap: moderateScale(20) }}>
+            <Text style={styles.label}>Agregar lectura</Text>
+            <View style={{ flexDirection: "row", gap: 20 }}>
+              <TextInput
+                keyboardType="numeric"
+                cursorColor={palette.accents_7}
+                selectionColor={palette.accents_3}
+                placeholder="1234..."
+                style={styles.input}
+                onChangeText={(text) => setMeterCounter(text)}
+                value={meterCounter}
+                autoFocus
+              />
 
-            <Button
-              circle
-              icon="camera"
-              type="successLight"
-              onPress={async () => {
-                if (permission && !permission.granted) {
-                  const response = await requestPermission();
-                  if (response.granted) {
+              <Button
+                circle
+                icon="camera"
+                type="successLight"
+                onPress={async () => {
+                  if (permission && !permission.granted) {
+                    const response = await requestPermission();
+                    if (response.granted) {
+                      setShowCamera(true);
+                    }
+                  } else {
                     setShowCamera(true);
                   }
-                } else {
-                  setShowCamera(true);
+                }}
+              />
+            </View>
+
+            <Button
+              title={recordToUpdate ? "Actualizar" : "Guardar"}
+              type="successLight"
+              onPress={async () => {
+                if (meterCounter && meterCounter.length > 0) {
+                  if (recordToUpdate) {
+                    // Evitar agregar un registro mayor al registro siguiente si existe
+                    // y menor al anterior si existe
+
+                    let prevRecord: Register | undefined;
+                    let nextRecord: Register | undefined;
+
+                    for (let index = 0; index < registers.length; index++) {
+                      const record = registers[index];
+
+                      if (record.id === recordToUpdate.id) {
+                        prevRecord = registers[index - 1];
+                        nextRecord = registers[index + 1];
+                      }
+                    }
+
+                    if (prevRecord && prevRecord.read >= Number(meterCounter)) {
+                      setshowAlert({
+                        ...showAlert,
+                        open: true,
+                        message: `La lectura no puede ser menor o igual a ${prevRecord?.read}`,
+                      });
+                      return;
+                    }
+
+                    if (nextRecord && nextRecord.read <= Number(meterCounter)) {
+                      setshowAlert({
+                        ...showAlert,
+                        open: true,
+                        message: `La lectura no puede ser mayor o igual a ${nextRecord?.read}`,
+                      });
+                      return;
+                    }
+
+                    await updateRegister(recordToUpdate.id, Number(meterCounter));
+                    setRecordToUpdate(undefined);
+                  } else {
+                    const lastRecord = registers[registers.length - 1];
+                    // Evitar agregar un registro menor al anterior existente
+                    if (registers.length >= 1 && Number(meterCounter) <= lastRecord.read) {
+                      setshowAlert({
+                        ...showAlert,
+                        open: true,
+                        message: `La lectura no puede ser menor o igual a ${lastRecord.read}`,
+                      });
+                      return;
+                    }
+
+                    const date = new Date();
+
+                    await insertRegister(
+                      date.getDay(),
+                      date.getMonth(),
+                      date.getFullYear(),
+                      date.getTime(),
+                      Number(meterCounter),
+                    );
+                  }
+
+                  setMeterCounter(undefined); // Restablecer el valor de la entrada
+                  setShowModal(undefined);
                 }
               }}
             />
-          </View>
-
-          <Button
-            title={recordToUpdate ? "Actualizar" : "Guardar"}
-            type="successLight"
-            onPress={async () => {
-              if (meterCounter && meterCounter.length > 0) {
-                if (recordToUpdate) {
-                  // Evitar agregar un registro mayor al registro siguiente si existe
-                  // y menor al anterior si existe
-
-                  let prevRecord: Register | undefined;
-                  let nextRecord: Register | undefined;
-
-                  for (let index = 0; index < registers.length; index++) {
-                    const record = registers[index];
-
-                    if (record.id === recordToUpdate.id) {
-                      prevRecord = registers[index - 1];
-                      nextRecord = registers[index + 1];
-                    }
-                  }
-
-                  if (
-                    (prevRecord && prevRecord.read >= Number(meterCounter)) ||
-                    (nextRecord && nextRecord.read <= Number(meterCounter))
-                  ) {
-                    return;
-                  }
-
-                  await updateRegister(recordToUpdate.id, Number(meterCounter));
-                  setRecordToUpdate(undefined);
-                } else {
-                  // Evitar agregar un registro menor al anterior existente
-                  if (
-                    registers.length >= 1 &&
-                    Number(meterCounter) <= registers[registers.length - 1].read
-                  )
-                    return;
-
-                  const date = new Date();
-
-                  await insertRegister(
-                    date.getDay(),
-                    date.getMonth(),
-                    date.getFullYear(),
-                    date.getTime(),
-                    Number(meterCounter),
-                  );
-                }
-
-                setMeterCounter(undefined); // Restablecer el valor de la entrada
+            <Button
+              title="Cancelar"
+              type="secondary"
+              onPress={() => {
                 setShowModal(undefined);
-              }
-            }}
-          />
-          <Button
-            title="Cancelar"
-            type="secondary"
-            onPress={() => {
-              setShowModal(undefined);
-              setRecordToUpdate(undefined);
-              setMeterCounter(undefined);
-            }}
-          />
-        </View>
+                setRecordToUpdate(undefined);
+                setMeterCounter(undefined);
+              }}
+            />
+          </View>
+        )}
       </Modal>
     </View>
   );
