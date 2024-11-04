@@ -2,7 +2,7 @@ import React from "react";
 import { Text, StyleSheet, Pressable, PressableProps, ViewStyle, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { palette } from "../utils/colors";
-import { verticalScale, horizontalScale } from "../utils/metrics";
+import { verticalScale, horizontalScale, moderateScale } from "../utils/metrics";
 
 interface ButtonProps extends PressableProps {
   title?: string;
@@ -66,7 +66,7 @@ export const Button: React.FC<ButtonProps> = ({
       )}
 
       {title && (
-        <View style={styles.content}>
+        <View style={styles.textContent}>
           <Text style={[styles.text, { color: getTextTheme(themes, type) }]}>{title}</Text>
         </View>
       )}
@@ -103,7 +103,7 @@ const themes = StyleSheet.create({
   successLighter: {
     backgroundColor: palette.successLighter,
     borderColor: palette.successLighter,
-    color: palette.accents_6,
+    color: palette.background,
   },
   successLight: {
     backgroundColor: palette.successLight,
@@ -114,8 +114,8 @@ const themes = StyleSheet.create({
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 15,
-    lineHeight: 21,
+    fontSize: moderateScale(15),
+    lineHeight: moderateScale(21),
     fontWeight: "600",
     letterSpacing: 0.25,
   },
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  content: {
+  textContent: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",

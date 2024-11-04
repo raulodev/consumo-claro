@@ -19,15 +19,10 @@ export const TopBar: React.FC<TopBarProps> = ({ count = 0, rightAction }) => {
   return (
     <View style={styles.container}>
       <View style={styles.subcontainer}>
-        <Text style={[styles.text, { fontSize: fontSize }]}>{count} $</Text>
+        <Text style={[styles.text, { fontSize: fontSize }]}>$ {count}</Text>
       </View>
-      <View style={styles.subcontainer}>
-        <Ionicons
-          name="refresh-outline"
-          size={24}
-          color={palette.background}
-          onPress={rightAction}
-        />
+      <View style={styles.subcontainer} onTouchStart={rightAction}>
+        <Ionicons name="refresh-outline" size={24} color={palette.background} />
       </View>
     </View>
   );
@@ -49,5 +44,7 @@ const styles = StyleSheet.create({
   subcontainer: {
     alignItems: "center",
     justifyContent: "center",
+    // borderWidth: 1,
+    // borderColor: "black",
   },
 });
