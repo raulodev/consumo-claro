@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet, Pressable, Vibration } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Animated, { SlideInRight, StretchInY, StretchOutY } from "react-native-reanimated";
+import Animated, { SlideInRight, StretchInY } from "react-native-reanimated";
 import { Register } from "../lib/interfaces";
 import { palette } from "../utils/colors";
 import { verticalScale, moderateScale, horizontalScale } from "../utils/metrics";
@@ -10,21 +10,13 @@ import { month } from "../utils/get-month";
 interface CardProps {
   register: Register;
   onSelect: (id: number) => void;
-  selectQuick?: boolean;
+  isSelectQuick?: boolean;
   selected: number[];
 }
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
-export const Card: React.FC<CardProps> = ({ register, onSelect, selectQuick, selected }) => {
-  const [currentDate, setDate] = useState<string>();
-
-  useEffect(() => {
-    const date = new Date();
-    date.setTime(register.date);
-    setDate(`${date.getDate()} ${month(date.getMonth())}, ${date.getHours()}:${date.getMinutes()}`);
-  }, []);
-
+export const Card: React.FC<CardProps> = ({ register, onSelect, isSelectQuick, selected }) => {
   const select = (vibrate = true) => {
     onSelect(register.id);
     if (vibrate) Vibration.vibrate(50);
@@ -34,10 +26,10 @@ export const Card: React.FC<CardProps> = ({ register, onSelect, selectQuick, sel
     <Animated.View entering={SlideInRight}>
       <Pressable
         onLongPress={() => {
-          if (!selectQuick) select();
+          if (!isSelectQuick) select();
         }}
         onPress={() => {
-          if (selectQuick) select(false);
+          if (isSelectQuick) select(false);
         }}>
         <View style={[styles.view]}>
           <View style={styles.container}>
@@ -60,7 +52,7 @@ export const Card: React.FC<CardProps> = ({ register, onSelect, selectQuick, sel
                     fontSize: moderateScale(16),
                     fontWeight: 500,
                   }}>
-                  {currentDate}
+                  {`${register.day} ${month(register.month)}`}
                 </Text>
               </View>
               <View>
@@ -95,7 +87,7 @@ const styles = StyleSheet.create({
     marginHorizontal: horizontalScale(10),
     flexDirection: "row",
     justifyContent: "flex-start",
-    gap: 20,
+    gap: moderateScale(20),
     alignItems: "center",
     elevation: 0.8,
   },
