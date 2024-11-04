@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import Animated, { FadeIn } from "react-native-reanimated";
 import { CameraView, CameraType, useCameraPermissions, FlashMode } from "expo-camera";
 import { Button } from "./button";
 
@@ -28,7 +29,7 @@ export const Camera: React.FC<CameraProps> = ({ action, back }) => {
   function takePicture() {}
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={styles.container} entering={FadeIn}>
       <CameraView
         style={styles.camera}
         facing={facing}
@@ -58,14 +59,16 @@ export const Camera: React.FC<CameraProps> = ({ action, back }) => {
           }}
         />
       </View>
-    </View>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: 300,
     justifyContent: "center",
+    backgroundColor: "transparent",
   },
 
   camera: {
