@@ -1,193 +1,83 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Vibration } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, TextInput } from "react-native";
 
 import { Button } from "./button";
 import { palette } from "../utils/colors";
-import { moderateScale, verticalScale } from "../utils/metrics";
+import { horizontalScale, moderateScale, verticalScale } from "../utils/metrics";
 import { calculateElectricityCost } from "../utils/tariff";
 
-const style = {
-  borderRadius: 60 / 2,
-  width: 60,
-  height: 60,
-};
+interface CalculatorProp {
+  onClose: () => void;
+}
 
-export default function Calculator() {
-  const [kwh, setKwhs] = useState("0");
+export const Calculator: React.FC<CalculatorProp> = ({ onClose }) => {
+  const [firstMeterCounter, setFirstMeterCounter] = useState<string>();
+  const [secondMeterCounter, setSecondMeterCounter] = useState<string>();
   const [precie, setPrecie] = useState(0);
 
-  const getCost = (newKwh: string) => {
-    if (newKwh !== "0") setPrecie(calculateElectricityCost(Number(newKwh)));
-  };
+  useEffect(() => {
+    const firstCounter = Number(firstMeterCounter);
+    const secondCounter = Number(secondMeterCounter);
 
-  const handlerClick = (value: string) => {
-    let newKwh = "";
-    if (kwh === "0") {
-      newKwh = value;
-      setKwhs(newKwh);
-      getCost(newKwh);
-    } else if (kwh.length < 15) {
-      newKwh = kwh + value;
-      setKwhs(newKwh);
-      getCost(newKwh);
-    }
-  };
-
-  const clear = () => {
-    if (kwh.length > 0) {
-      const newKwh = kwh.slice(0, -1);
-
-      if (newKwh === "") {
-        setKwhs("0");
-        setPrecie(0);
+    if (firstMeterCounter && !secondMeterCounter) {
+      setPrecie(calculateElectricityCost(firstCounter));
+    } else if (firstMeterCounter && secondMeterCounter) {
+      if (secondCounter < firstCounter) {
+        setPrecie(calculateElectricityCost(firstCounter - secondCounter));
       } else {
-        setKwhs(newKwh);
-        getCost(newKwh);
+        setPrecie(calculateElectricityCost(secondCounter - firstCounter));
       }
     }
-  };
-
-  const reset = () => {
-    setKwhs("0");
-    setPrecie(0);
-  };
+  }, [firstMeterCounter, secondMeterCounter]);
 
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          color: palette.accents_7,
-          fontSize: moderateScale(20),
-        }}>
-        {kwh} kwh
-      </Text>
-      <Text
-        style={{
-          color: palette.accents_7,
-          fontSize: moderateScale(28),
-          fontWeight: 600,
-        }}>
-        {precie} $
-      </Text>
+      <Text style={styles.text}>$ {precie}</Text>
 
-      <View style={{ paddingVertical: verticalScale(20) }}>
-        <View style={styles.row_btns}>
-          <Button
-            circle
-            title="1"
-            style={style}
-            type="successLight"
-            onPress={() => handlerClick("1")}
-          />
-          <Button
-            circle
-            title="2"
-            style={style}
-            type="successLight"
-            onPress={() => handlerClick("2")}
-          />
-          <Button
-            circle
-            title="3"
-            style={style}
-            type="successLight"
-            onPress={() => handlerClick("3")}
-          />
-        </View>
-        <View style={styles.row_btns}>
-          <Button
-            circle
-            title="4"
-            style={style}
-            type="successLight"
-            onPress={() => handlerClick("4")}
-          />
-          <Button
-            circle
-            title="5"
-            style={style}
-            type="successLight"
-            onPress={() => handlerClick("5")}
-          />
-          <Button
-            circle
-            title="6"
-            style={style}
-            type="successLight"
-            onPress={() => handlerClick("6")}
-          />
-        </View>
-        <View style={styles.row_btns}>
-          <Button
-            circle
-            title="7"
-            style={style}
-            type="successLight"
-            onPress={() => handlerClick("7")}
-          />
-          <Button
-            circle
-            title="8"
-            style={style}
-            type="successLight"
-            onPress={() => handlerClick("8")}
-          />
-          <Button
-            circle
-            title="9"
-            style={style}
-            type="successLight"
-            onPress={() => handlerClick("9")}
-          />
-        </View>
-        <View style={styles.row_btns}>
-          <Button
-            circle
-            title="."
-            style={style}
-            type="successLight"
-            onPress={() => {
-              if (!kwh.includes(".") && kwh.length < 8) setKwhs(kwh + ".");
-            }}
-          />
-          <Button
-            circle
-            title="0"
-            style={style}
-            type="successLight"
-            onPress={() => handlerClick("0")}
-          />
-          <Button
-            circle
-            type="warning"
-            style={style}
-            icon="backspace"
-            onPress={clear}
-            onLongPress={() => {
-              Vibration.vibrate(50);
-              reset();
-            }}
-          />
-        </View>
-      </View>
+      <TextInput
+        style={styles.input}
+        keyboardType="numeric"
+        cursorColor={palette.accents_7}
+        selectionColor={palette.accents_3}
+        placeholder="Lectura 1 (o consumo en kwh)"
+        autoFocus
+        onChangeText={(text) => setFirstMeterCounter(text)}
+        value={firstMeterCounter}
+      />
+
+      <TextInput
+        style={styles.input}
+        keyboardType="numeric"
+        cursorColor={palette.accents_7}
+        selectionColor={palette.accents_3}
+        placeholder="Lectura 2"
+        onChangeText={(text) => setSecondMeterCounter(text)}
+        value={secondMeterCounter}
+      />
+
+      <Button title="Cerrar" type="secondary" onPress={onClose} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
     backgroundColor: palette.background,
-    alignItems: "center",
-    justifyContent: "space-around",
-    padding: 20,
+    paddingHorizontal: horizontalScale(15),
+    gap: moderateScale(20),
+    marginTop: verticalScale(20),
   },
-  row_btns: {
-    flexDirection: "row",
-    display: "flex",
-    justifyContent: "center",
-    gap: moderateScale(15),
-    marginTop: verticalScale(10),
+  input: {
+    fontSize: moderateScale(18),
+    borderWidth: 0.25,
+    borderColor: palette.accents_5,
+    borderRadius: moderateScale(5),
+    padding: moderateScale(8),
+  },
+  text: {
+    color: palette.accents_7,
+    fontSize: moderateScale(20),
+    fontWeight: "600",
   },
 });

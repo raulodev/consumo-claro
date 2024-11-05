@@ -4,6 +4,7 @@ import { Text, View } from "react-native";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
 
 import { palette } from "../utils/colors";
+import { horizontalScale, verticalScale } from "../utils/metrics";
 
 interface AlertProps {
   open?: boolean;
@@ -26,7 +27,7 @@ export const Alert: React.FC<AlertProps> = ({ open = false, message, onClose }) 
           left: 0,
           right: 0,
           alignItems: "center",
-          marginTop: 50,
+          marginTop: verticalScale(50),
           zIndex: 100,
         }}>
         <Animated.View
@@ -35,8 +36,8 @@ export const Alert: React.FC<AlertProps> = ({ open = false, message, onClose }) 
           style={{
             backgroundColor: palette.foreground,
 
-            paddingHorizontal: 20,
-            paddingVertical: 8,
+            paddingHorizontal: horizontalScale(20),
+            paddingVertical: verticalScale(8),
             borderRadius: 5,
             width: "60%",
             alignItems: "center",

@@ -7,7 +7,7 @@ import { StyleSheet, Text, View, TextInput, FlatList } from "react-native";
 
 import { Alert } from "./src/components/alert";
 import { Button } from "./src/components/button";
-import Calculator from "./src/components/calculator";
+import { Calculator } from "./src/components/calculator";
 import { Camera } from "./src/components/camera";
 import { Card } from "./src/components/card";
 import { FloatingButton } from "./src/components/floating-buttons";
@@ -23,7 +23,7 @@ import {
 } from "./src/lib/database";
 import { Register } from "./src/lib/interfaces";
 import { palette } from "./src/utils/colors";
-import { moderateScale } from "./src/utils/metrics";
+import { horizontalScale, moderateScale, verticalScale } from "./src/utils/metrics";
 import { calculateElectricityCost } from "./src/utils/tariff";
 
 type modals = "calculator" | "add-register" | "image-view";
@@ -182,7 +182,7 @@ export default function App() {
       </Modal>
 
       <Modal open={showModal === "calculator"} onAction={() => setShowModal(undefined)}>
-        <Calculator />
+        <Calculator onClose={() => setShowModal(undefined)} />
       </Modal>
 
       <Modal
@@ -201,9 +201,13 @@ export default function App() {
           />
         ) : (
           <View
-            style={{ paddingHorizontal: moderateScale(15), marginTop: 20, gap: moderateScale(20) }}>
+            style={{
+              paddingHorizontal: horizontalScale(15),
+              marginTop: verticalScale(20),
+              gap: moderateScale(20),
+            }}>
             <Text style={styles.label}>Agregar lectura</Text>
-            <View style={{ flexDirection: "row", gap: 20 }}>
+            <View style={{ flexDirection: "row", gap: moderateScale(20) }}>
               <TextInput
                 keyboardType="numeric"
                 cursorColor={palette.accents_7}
