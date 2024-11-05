@@ -22,7 +22,8 @@ interface ButtonProps extends PressableProps {
     | "return-up-back"
     | "refresh-outline"
     | "flash"
-    | "flash-off";
+    | "flash-off"
+    | "checkmark";
   iconSize?: number;
   style?: ViewStyle;
   circle?: boolean;

@@ -3,7 +3,9 @@ import { Platform } from "react-native";
 import { Register } from "./interfaces";
 
 export const openDatabase = async () => {
-  const db = await SQLite.openDatabaseAsync("db");
+  const db = await SQLite.openDatabaseAsync("db", {
+    useNewConnection: true,
+  });
   return db;
 };
 
@@ -12,7 +14,7 @@ export const createTables = async () => {
 
   const db = await openDatabase();
   await db.execAsync(`
-    CREATE TABLE IF NOT EXISTS register (id INTEGER PRIMARY KEY NOT NULL,day INT , month INT , year INT, date INT, read INT);
+    CREATE TABLE IF NOT EXISTS register (id INTEGER PRIMARY KEY NOT NULL,day INT , month INT , year INT, date INT, read INT , image TEXT);
   `);
 };
 
@@ -22,18 +24,19 @@ export const insertRegister = async (
   year: number,
   date: number,
   read: number,
+  image?: string,
 ) => {
   const db = await openDatabase();
   if (Platform.OS === "web") return;
   await db.execAsync(
-    `INSERT INTO register (day, month, year, date, read) VALUES (${day}, ${month}, ${year}, ${date}, ${read})`,
+    `INSERT INTO register (day, month, year, date, read , image) VALUES (${day}, ${month}, ${year}, ${date}, ${read}, '${image}')`,
   );
 };
 
-export const updateRegister = async (id: number, read: number) => {
+export const updateRegister = async (id: number, read: number, image?: string) => {
   if (Platform.OS === "web") return;
   const db = await openDatabase();
-  await db.execAsync(`UPDATE register SET  read = ${read} WHERE id = ${id}`);
+  await db.execAsync(`UPDATE register SET  read = ${read}, image = '${image}' WHERE id = ${id}`);
 };
 
 export const deleteRegister = async (id: number) => {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, FlatList } from "react-native";
 import { useCameraPermissions } from "expo-camera";
+import { Image } from "expo-image";
 import registerRootComponent from "expo/build/launch/registerRootComponent";
 import Calculator from "./src/components/calculator";
 import { FloatingButton } from "./src/components/floating-buttons";
@@ -24,12 +25,7 @@ import {
 import { Register } from "./src/lib/interfaces";
 import { calculateElectricityCost } from "./src/utils/tariff";
 
-// Hacer dos Vistas
-// 7- Tomar foto
-// 8- Guardar foto en la base de datos
-// 9- mostrar foto
-
-type modals = "calculator" | "add-register";
+type modals = "calculator" | "add-register" | "image-view";
 
 export default function App() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -45,6 +41,7 @@ export default function App() {
   const [meterCounter, setMeterCounter] = useState<string | undefined>("");
   const [selected, setSelected] = useState<number[]>([]);
   const [cost, setCost] = useState<number>(0);
+  const [image, setImage] = useState<string>();
 
   useEffect(() => {
     async function init() {
@@ -111,6 +108,10 @@ export default function App() {
             onSelect={handlerAddToDelete}
             isSelectQuick={selectQuick}
             selected={selected}
+            onGetImage={(image) => {
+              setShowModal("image-view");
+              setImage(image);
+            }}
           />
         )}
         keyExtractor={(item) => item.id.toString()}
@@ -159,13 +160,43 @@ export default function App() {
         onPress={() => setShowModal("add-register")}
       />
 
+      <Modal
+        open={showModal === "image-view"}
+        onAction={() => {
+          setShowModal(undefined);
+          setImage(undefined);
+        }}>
+        <View
+          style={{
+            padding: 10,
+            paddingVertical: 40,
+          }}>
+          <Image
+            source={{ uri: `data:image/png;base64,${image}` }}
+            transition={500}
+            style={{ height: "100%", borderRadius: moderateScale(8), overflow: "hidden" }}
+          />
+        </View>
+      </Modal>
+
       <Modal open={showModal === "calculator"} onAction={() => setShowModal(undefined)}>
         <Calculator />
       </Modal>
 
-      <Modal open={showModal === "add-register"} onAction={() => setShowModal(undefined)}>
+      <Modal
+        open={showModal === "add-register"}
+        onAction={() => {
+          setShowModal(undefined);
+          setImage(undefined);
+        }}>
         {showCamera ? (
-          <Camera back={() => setShowCamera(false)} /> // animar esto
+          <Camera
+            back={() => setShowCamera(false)}
+            getImageBase64={(image) => {
+              setImage(image);
+              setShowCamera(false);
+            }}
+          />
         ) : (
           <View
             style={{ paddingHorizontal: moderateScale(15), marginTop: 20, gap: moderateScale(20) }}>
@@ -184,7 +215,7 @@ export default function App() {
 
               <Button
                 circle
-                icon="camera"
+                icon={image ? "checkmark" : "camera"}
                 type="successLight"
                 onPress={async () => {
                   if (permission && !permission.granted) {
@@ -224,7 +255,7 @@ export default function App() {
                       setshowAlert({
                         ...showAlert,
                         open: true,
-                        message: `La lectura no puede ser menor o igual a ${prevRecord?.read}`,
+                        message: `Esta lectura no puede ser menor o igual a ${prevRecord?.read}`,
                       });
                       return;
                     }
@@ -233,12 +264,12 @@ export default function App() {
                       setshowAlert({
                         ...showAlert,
                         open: true,
-                        message: `La lectura no puede ser mayor o igual a ${nextRecord?.read}`,
+                        message: `Esta lectura no puede ser mayor o igual a ${nextRecord?.read}`,
                       });
                       return;
                     }
 
-                    await updateRegister(recordToUpdate.id, Number(meterCounter));
+                    await updateRegister(recordToUpdate.id, Number(meterCounter), image);
                     setRecordToUpdate(undefined);
                   } else {
                     const lastRecord = registers[registers.length - 1];
@@ -247,7 +278,7 @@ export default function App() {
                       setshowAlert({
                         ...showAlert,
                         open: true,
-                        message: `La lectura no puede ser menor o igual a ${lastRecord.read}`,
+                        message: `Esta lectura no puede ser menor o igual a ${lastRecord.read}`,
                       });
                       return;
                     }
@@ -260,11 +291,13 @@ export default function App() {
                       date.getFullYear(),
                       date.getTime(),
                       Number(meterCounter),
+                      image,
                     );
                   }
 
                   setMeterCounter(undefined); // Restablecer el valor de la entrada
                   setShowModal(undefined);
+                  setImage(undefined);
                 }
               }}
             />
@@ -275,6 +308,7 @@ export default function App() {
                 setShowModal(undefined);
                 setRecordToUpdate(undefined);
                 setMeterCounter(undefined);
+                setImage(undefined);
               }}
             />
           </View>

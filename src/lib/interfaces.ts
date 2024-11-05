@@ -5,9 +5,10 @@ export interface Register {
   year: number;
   date: number;
   read: number;
+  image?: string;
 }
 
 export type Tariff = {
-  limit : number ;
-  rate : number
-}
+  limit: number;
+  rate: number;
+};

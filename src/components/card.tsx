@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Pressable, Vibration } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { SlideInRight, StretchInY } from "react-native-reanimated";
+import { Image } from "expo-image";
 import { Register } from "../lib/interfaces";
 import { palette } from "../utils/colors";
 import { verticalScale, moderateScale, horizontalScale } from "../utils/metrics";
@@ -12,11 +13,18 @@ interface CardProps {
   onSelect: (id: number) => void;
   isSelectQuick?: boolean;
   selected: number[];
+  onGetImage: (image: string) => void;
 }
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
-export const Card: React.FC<CardProps> = ({ register, onSelect, isSelectQuick, selected }) => {
+export const Card: React.FC<CardProps> = ({
+  register,
+  onSelect,
+  isSelectQuick,
+  selected,
+  onGetImage,
+}) => {
   const select = (vibrate = true) => {
     onSelect(register.id);
     if (vibrate) Vibration.vibrate(50);
@@ -35,14 +43,28 @@ export const Card: React.FC<CardProps> = ({ register, onSelect, isSelectQuick, s
           <View style={styles.container}>
             <View
               style={{
-                width: 40,
-                height: 40,
+                width: 45,
+                height: 45,
                 backgroundColor: palette.accents_2,
-                borderRadius: 40 / 2,
+                borderRadius: 45 / 2,
                 justifyContent: "center",
                 alignItems: "center",
+                overflow: "hidden",
+              }}
+              onTouchStart={() => {
+                if (register.image && register.image != "undefined") {
+                  onGetImage(register.image);
+                }
               }}>
-              <Ionicons name="image-outline" size={24} color={palette.accents_5} />
+              {register.image != "undefined" ? (
+                <Image
+                  source={{ uri: `data:image/png;base64,${register.image}` }}
+                  transition={500}
+                  style={{ height: 45, width: 45 }}
+                />
+              ) : (
+                <Ionicons name="image-sharp" size={24} color={palette.accents_5} />
+              )}
             </View>
             <View style={{ flex: 1 }}>
               <View style={{ marginBottom: verticalScale(2) }}>
