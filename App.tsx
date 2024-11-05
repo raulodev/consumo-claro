@@ -208,7 +208,7 @@ export default function App() {
                 keyboardType="numeric"
                 cursorColor={palette.accents_7}
                 selectionColor={palette.accents_3}
-                placeholder="1234..."
+                placeholder="kwh"
                 style={styles.input}
                 onChangeText={(text) => setMeterCounter(text)}
                 value={meterCounter}
