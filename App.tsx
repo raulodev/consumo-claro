@@ -173,7 +173,7 @@ export default function App() {
             paddingVertical: 40,
           }}>
           <Image
-            source={{ uri: `data:image/png;base64,${image}` }}
+            source={{ uri: image }}
             transition={500}
             style={{ height: "100%", borderRadius: moderateScale(8), overflow: "hidden" }}
           />
@@ -193,7 +193,7 @@ export default function App() {
         {showCamera ? (
           <Camera
             back={() => setShowCamera(false)}
-            getImageBase64={(image) => {
+            getImage={(image) => {
               setImage(image);
               setShowCamera(false);
             }}

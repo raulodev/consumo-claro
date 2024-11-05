@@ -37,7 +37,15 @@ export const insertRegister = async (
 export const updateRegister = async (id: number, read: number, image?: string) => {
   if (Platform.OS === "web") return;
   const db = await openDatabase();
-  await db.execAsync(`UPDATE register SET  read = ${read}, image = '${image}' WHERE id = ${id}`);
+
+  let sql;
+
+  if (image) {
+    sql = `UPDATE register SET  read = ${read}, image = '${image}' WHERE id = ${id}`;
+  } else {
+    sql = `UPDATE register SET  read = ${read} WHERE id = ${id}`;
+  }
+  await db.execAsync(sql);
 };
 
 export const deleteRegister = async (id: number) => {

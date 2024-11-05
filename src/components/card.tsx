@@ -59,8 +59,8 @@ export const Card: React.FC<CardProps> = ({
               }}>
               {register.image !== "undefined" ? (
                 <Image
-                  source={{ uri: `data:image/png;base64,${register.image}` }}
-                  transition={500}
+                  source={{ uri: register.image }}
+                  transition={1000}
                   style={{ height: 45, width: 45 }}
                 />
               ) : (

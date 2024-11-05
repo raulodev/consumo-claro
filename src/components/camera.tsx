@@ -8,15 +8,15 @@ import { Button } from "./button";
 import { moderateScale } from "../utils/metrics";
 
 interface CameraProps {
-  getImageBase64: (image: string) => void;
+  getImage: (image: string) => void;
   back?: () => void;
 }
 
-export const Camera: React.FC<CameraProps> = ({ getImageBase64, back }) => {
+export const Camera: React.FC<CameraProps> = ({ getImage, back }) => {
   const [facing, setFacing] = useState<CameraType>("back");
   const [flash, setFlash] = useState<FlashMode>("off");
   const [cameraReady, setCameraReady] = useState<boolean>();
-  const [image, setImage] = useState<{ uri: string; base64: string }>();
+  const [image, setImage] = useState<string>();
   const cameraRef = useRef<CameraView | null>(null);
 
   function toggleCameraFacing() {
@@ -29,16 +29,16 @@ export const Camera: React.FC<CameraProps> = ({ getImageBase64, back }) => {
 
   async function takePicture() {
     if (cameraReady) {
-      const source = await cameraRef.current?.takePictureAsync({ base64: true });
+      const source = await cameraRef.current?.takePictureAsync();
 
-      if (source && source.base64 && source.uri) {
-        setImage({ ...image, uri: source.uri, base64: source.base64 });
+      if (source && source.uri) {
+        setImage(source.uri);
       }
     }
   }
 
   function savePicture() {
-    if (image && image.base64) getImageBase64(image.base64);
+    if (image && image) getImage(image);
   }
 
   return (
