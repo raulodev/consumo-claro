@@ -46,7 +46,7 @@ export const Camera: React.FC<CameraProps> = ({ getImage, back }) => {
       {image ? (
         <View style={{ flex: 1, gap: moderateScale(20) }}>
           <Image source={image} style={styles.image} transition={500} contentFit="cover" />
-          <Button onPress={savePicture} type="successLight" title="Guardar" />
+          <Button onPress={savePicture} type="successLight" title="Aceptar" />
           <Button
             onPress={() => setImage(undefined)}
             type="secondary"
