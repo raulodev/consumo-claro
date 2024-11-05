@@ -1,13 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Vibration } from "react-native";
 
 import { palette } from "../utils/colors";
 import { verticalScale, moderateScale, horizontalScale } from "../utils/metrics";
 
 interface TopBarProps {
   count?: number;
-  rightAction?: () => void;
+  rightAction: () => void;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({ count = 0, rightAction }) => {
@@ -22,7 +22,12 @@ export const TopBar: React.FC<TopBarProps> = ({ count = 0, rightAction }) => {
       <View style={styles.subcontainer}>
         <Text style={[styles.text, { fontSize: fontSize }]}>$ {count}</Text>
       </View>
-      <View style={styles.subcontainer} onTouchStart={rightAction}>
+      <View
+        style={styles.subcontainer}
+        onTouchStart={() => {
+          rightAction();
+          Vibration.vibrate(50);
+        }}>
         <Ionicons name="refresh-outline" size={24} color={palette.background} />
       </View>
     </View>
