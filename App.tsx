@@ -103,7 +103,7 @@ export default function App() {
       <FlatList
         ListEmptyComponent={<ListEmpty />}
         data={registers}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <Card
             register={item}
             onSelect={handlerAddToDelete}
@@ -113,6 +113,7 @@ export default function App() {
               setShowModal("image-view");
               setImage(image);
             }}
+            prevRegister={registers[index - 1]}
           />
         )}
         keyExtractor={(item) => item.id.toString()}

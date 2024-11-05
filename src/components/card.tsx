@@ -8,6 +8,7 @@ import { Register } from "../lib/interfaces";
 import { palette } from "../utils/colors";
 import { month } from "../utils/get-month";
 import { verticalScale, moderateScale, horizontalScale } from "../utils/metrics";
+import { calculateElectricityCost } from "../utils/tariff";
 
 interface CardProps {
   register: Register;
@@ -15,6 +16,7 @@ interface CardProps {
   isSelectQuick?: boolean;
   selected: number[];
   onGetImage: (image: string) => void;
+  prevRegister: Register;
 }
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
@@ -25,6 +27,7 @@ export const Card: React.FC<CardProps> = ({
   isSelectQuick,
   selected,
   onGetImage,
+  prevRegister,
 }) => {
   const select = (vibrate = true) => {
     onSelect(register.id);
@@ -104,6 +107,13 @@ export const Card: React.FC<CardProps> = ({
                   {register.read} kwh
                 </Text>
               </View>
+            </View>
+            <View style={{ padding: 4 }}>
+              {prevRegister && (
+                <Text style={{ color: palette.accents_7 }}>
+                  + {calculateElectricityCost(register.read - prevRegister.read)} $
+                </Text>
+              )}
             </View>
           </View>
         </View>
