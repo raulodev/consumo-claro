@@ -103,7 +103,7 @@ export const Card: React.FC<CardProps> = ({
                 </Text>
               </View>
               <View>
-                <Text style={{ color: palette.accents_4, fontSize: moderateScale(18) }}>
+                <Text style={{ color: palette.accents_4, fontSize: moderateScale(16) }}>
                   {register.read} kwh
                 </Text>
               </View>
