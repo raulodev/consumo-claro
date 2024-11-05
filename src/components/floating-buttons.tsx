@@ -1,7 +1,8 @@
-import React from "react";
 import { Ionicons } from "@expo/vector-icons";
+import React from "react";
 import { StyleSheet, Pressable, PressableProps, ViewStyle } from "react-native";
 import Animated, { FadeInRight, FadeOutRight } from "react-native-reanimated";
+
 import { palette } from "../utils/colors";
 
 interface FloatingButtonProps extends PressableProps {

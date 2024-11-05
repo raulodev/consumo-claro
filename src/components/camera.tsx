@@ -1,8 +1,9 @@
+import { CameraView, CameraType, FlashMode } from "expo-camera";
+import { Image } from "expo-image";
 import React, { useState, useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
-import { Image } from "expo-image";
-import { CameraView, CameraType, FlashMode } from "expo-camera";
+
 import { Button } from "./button";
 import { moderateScale } from "../utils/metrics";
 

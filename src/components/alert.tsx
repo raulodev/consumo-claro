@@ -1,7 +1,8 @@
+import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect } from "react";
 import { Text, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInUp, FadeOutUp } from "react-native-reanimated";
+
 import { palette } from "../utils/colors";
 
 interface AlertProps {

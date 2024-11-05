@@ -1,5 +1,6 @@
 import * as SQLite from "expo-sqlite";
 import { Platform } from "react-native";
+
 import { Register } from "./interfaces";
 
 export const openDatabase = async () => {

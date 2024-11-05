@@ -1,12 +1,13 @@
+import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import React from "react";
 import { View, Text, StyleSheet, Pressable, Vibration } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import Animated, { SlideInRight, StretchInY } from "react-native-reanimated";
-import { Image } from "expo-image";
+
 import { Register } from "../lib/interfaces";
 import { palette } from "../utils/colors";
-import { verticalScale, moderateScale, horizontalScale } from "../utils/metrics";
 import { month } from "../utils/get-month";
+import { verticalScale, moderateScale, horizontalScale } from "../utils/metrics";
 
 interface CardProps {
   register: Register;
@@ -52,11 +53,11 @@ export const Card: React.FC<CardProps> = ({
                 overflow: "hidden",
               }}
               onTouchStart={() => {
-                if (register.image && register.image != "undefined") {
+                if (register.image && register.image !== "undefined") {
                   onGetImage(register.image);
                 }
               }}>
-              {register.image != "undefined" ? (
+              {register.image !== "undefined" ? (
                 <Image
                   source={{ uri: `data:image/png;base64,${register.image}` }}
                   transition={500}

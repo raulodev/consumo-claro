@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TextInput, FlatList } from "react-native";
+import registerRootComponent from "expo/build/launch/registerRootComponent";
 import { useCameraPermissions } from "expo-camera";
 import { Image } from "expo-image";
-import registerRootComponent from "expo/build/launch/registerRootComponent";
-import Calculator from "./src/components/calculator";
-import { FloatingButton } from "./src/components/floating-buttons";
-import { Modal } from "./src/components/modal";
-import { Button } from "./src/components/button";
-import { Card } from "./src/components/card";
-import { TopBar } from "./src/components/top-bar";
-import { ListEmpty } from "./src/components/list-empty";
-import { Camera } from "./src/components/camera";
+import { StatusBar } from "expo-status-bar";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, Text, View, TextInput, FlatList } from "react-native";
+
 import { Alert } from "./src/components/alert";
-import { palette } from "./src/utils/colors";
-import { moderateScale } from "./src/utils/metrics";
+import { Button } from "./src/components/button";
+import Calculator from "./src/components/calculator";
+import { Camera } from "./src/components/camera";
+import { Card } from "./src/components/card";
+import { FloatingButton } from "./src/components/floating-buttons";
+import { ListEmpty } from "./src/components/list-empty";
+import { Modal } from "./src/components/modal";
+import { TopBar } from "./src/components/top-bar";
 import {
   insertRegister,
   createTables,
@@ -23,6 +22,8 @@ import {
   updateRegister,
 } from "./src/lib/database";
 import { Register } from "./src/lib/interfaces";
+import { palette } from "./src/utils/colors";
+import { moderateScale } from "./src/utils/metrics";
 import { calculateElectricityCost } from "./src/utils/tariff";
 
 type modals = "calculator" | "add-register" | "image-view";
@@ -52,7 +53,7 @@ export default function App() {
 
       if (allRegisters.length === 0) {
         setCost(0);
-      } else if (allRegisters.length == 1) {
+      } else if (allRegisters.length === 1) {
         setCost(calculateElectricityCost(allRegisters[0].read));
       } else {
         setCost(
@@ -118,7 +119,7 @@ export default function App() {
         ListFooterComponent={<View style={{ height: 40 }}></View>}
       />
 
-      {selected.length == 1 && (
+      {selected.length === 1 && (
         <FloatingButton
           icon="pencil"
           animate

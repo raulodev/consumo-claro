@@ -1,6 +1,7 @@
+import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+
 import { palette } from "../utils/colors";
 import { verticalScale, moderateScale } from "../utils/metrics";
 
@@ -14,7 +15,7 @@ export const TopBar: React.FC<TopBarProps> = ({ count = 0, rightAction }) => {
 
   useEffect(() => {
     if (count.toString().length > 10) setFontSize(moderateScale(20));
-  });
+  }, [fontSize, count]);
 
   return (
     <View style={styles.container}>

@@ -1,6 +1,7 @@
 import React from "react";
-import Animated, { SlideInDown, SlideOutDown, FadeIn, FadeOut } from "react-native-reanimated";
 import { StyleSheet, View, ViewProps } from "react-native";
+import Animated, { SlideInDown, SlideOutDown, FadeIn, FadeOut } from "react-native-reanimated";
+
 import { palette } from "../utils/colors";
 import { moderateScale } from "../utils/metrics";
 

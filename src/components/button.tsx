@@ -1,6 +1,7 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, StyleSheet, Pressable, PressableProps, ViewStyle, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+
 import { palette } from "../utils/colors";
 import { verticalScale, horizontalScale, moderateScale } from "../utils/metrics";
 

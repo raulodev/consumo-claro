@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Vibration } from "react-native";
+
 import { Button } from "./button";
 import { palette } from "../utils/colors";
 import { moderateScale, verticalScale } from "../utils/metrics";
