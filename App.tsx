@@ -37,7 +37,7 @@ export default function App() {
   });
   const [selectQuick, setSelectQuick] = useState<boolean>(false);
   const [showCamera, setShowCamera] = useState<boolean>(false);
-  const [recordToUpdate, setRecordToUpdate] = useState<Register>();
+  const [registerToUpdate, setRegisterToUpdate] = useState<Register>();
   const [registers, setRegisters] = useState<Register[]>([]);
   const [meterCounter, setMeterCounter] = useState<string | undefined>("");
   const [selected, setSelected] = useState<number[]>([]);
@@ -128,7 +128,7 @@ export default function App() {
           onPress={async () => {
             setShowModal("add-register");
             const editRegister = registers.filter((item) => item.id === selected[0]);
-            setRecordToUpdate(editRegister[0]);
+            setRegisterToUpdate(editRegister[0]);
           }}
         />
       )}
@@ -216,6 +216,7 @@ export default function App() {
                 style={styles.input}
                 onChangeText={(text) => setMeterCounter(text)}
                 value={meterCounter}
+                defaultValue={registerToUpdate ? registerToUpdate.read.toString() : meterCounter}
                 autoFocus
               />
 
@@ -237,11 +238,11 @@ export default function App() {
             </View>
 
             <Button
-              title={recordToUpdate ? "Actualizar" : "Guardar"}
+              title={registerToUpdate ? "Actualizar" : "Guardar"}
               type="successLight"
               onPress={async () => {
                 if (meterCounter && meterCounter.length > 0) {
-                  if (recordToUpdate) {
+                  if (registerToUpdate) {
                     // Evitar agregar un registro mayor al registro siguiente si existe
                     // y menor al anterior si existe
 
@@ -251,7 +252,7 @@ export default function App() {
                     for (let index = 0; index < registers.length; index++) {
                       const record = registers[index];
 
-                      if (record.id === recordToUpdate.id) {
+                      if (record.id === registerToUpdate.id) {
                         prevRecord = registers[index - 1];
                         nextRecord = registers[index + 1];
                       }
@@ -275,8 +276,8 @@ export default function App() {
                       return;
                     }
 
-                    await updateRegister(recordToUpdate.id, Number(meterCounter), image);
-                    setRecordToUpdate(undefined);
+                    await updateRegister(registerToUpdate.id, Number(meterCounter), image);
+                    setRegisterToUpdate(undefined);
                   } else {
                     const lastRecord = registers[registers.length - 1];
                     // Evitar agregar un registro menor al anterior existente
@@ -312,7 +313,7 @@ export default function App() {
               type="secondary"
               onPress={() => {
                 setShowModal(undefined);
-                setRecordToUpdate(undefined);
+                setRegisterToUpdate(undefined);
                 setMeterCounter(undefined);
                 setImage(undefined);
               }}
