@@ -117,7 +117,7 @@ export default function App() {
           />
         )}
         keyExtractor={(item) => item.id.toString()}
-        ListFooterComponent={<View style={{ height: 40 }}></View>}
+        ListFooterComponent={<View style={{ height: 100 }}></View>}
       />
 
       {selected.length === 1 && (
