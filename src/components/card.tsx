@@ -36,6 +36,7 @@ export const Card: React.FC<CardProps> = ({
       <Pressable
         onLongPress={() => {
           if (!isSelectQuick) select();
+          else select(false);
         }}
         onPress={() => {
           if (isSelectQuick) select(false);
@@ -50,7 +51,6 @@ export const Card: React.FC<CardProps> = ({
                 borderRadius: 45 / 2,
                 justifyContent: "center",
                 alignItems: "center",
-                overflow: "hidden",
               }}
               onTouchStart={() => {
                 if (register.image && register.image !== "undefined") {
@@ -61,10 +61,31 @@ export const Card: React.FC<CardProps> = ({
                 <Image
                   source={{ uri: register.image }}
                   transition={1000}
-                  style={{ height: 45, width: 45 }}
+                  style={{ height: 45, width: 45, borderRadius: 45 / 2 }}
                 />
               ) : (
                 <Ionicons name="image-sharp" size={24} color={palette.accents_5} />
+              )}
+
+              {selected.includes(register.id) && (
+                <View
+                  style={{
+                    height: 25,
+                    width: 25,
+                    borderRadius: 25 / 2,
+                    backgroundColor: "white",
+                    zIndex: 100,
+                    position: "absolute",
+                    right: -5,
+                    bottom: -5,
+                  }}>
+                  <AnimatedIcon
+                    entering={StretchInY.springify(300)}
+                    name="checkmark-circle"
+                    size={25}
+                    color={palette.successLight}
+                  />
+                </View>
               )}
             </View>
             <View style={{ flex: 1 }}>
@@ -83,16 +104,6 @@ export const Card: React.FC<CardProps> = ({
                   {register.read} kwh
                 </Text>
               </View>
-            </View>
-            <View>
-              {selected.includes(register.id) && (
-                <AnimatedIcon
-                  entering={StretchInY.springify(300)}
-                  name="checkmark-circle"
-                  size={28}
-                  color={palette.successLight}
-                />
-              )}
             </View>
           </View>
         </View>
