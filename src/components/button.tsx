@@ -103,7 +103,7 @@ const themes = StyleSheet.create({
   successLighter: {
     backgroundColor: palette.successLighter,
     borderColor: palette.successLighter,
-    color: palette.background,
+    color: palette.accents_7,
   },
   successLight: {
     backgroundColor: palette.successLight,
