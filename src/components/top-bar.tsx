@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 
 import { palette } from "../utils/colors";
-import { verticalScale, moderateScale } from "../utils/metrics";
+import { verticalScale, moderateScale, horizontalScale } from "../utils/metrics";
 
 interface TopBarProps {
   count?: number;
@@ -11,7 +11,7 @@ interface TopBarProps {
 }
 
 export const TopBar: React.FC<TopBarProps> = ({ count = 0, rightAction }) => {
-  const [fontSize, setFontSize] = useState<number>(moderateScale(25));
+  const [fontSize, setFontSize] = useState<number>(moderateScale(22));
 
   useEffect(() => {
     if (count.toString().length > 10) setFontSize(moderateScale(20));
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginTop: verticalScale(20),
-    paddingHorizontal: 40,
+    marginHorizontal: horizontalScale(10),
   },
   text: {
     color: palette.background,

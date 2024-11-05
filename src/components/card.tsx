@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: palette.background,
     borderRadius: moderateScale(10),
-    padding: verticalScale(10),
+    padding: moderateScale(10),
     marginVertical: verticalScale(2),
     marginHorizontal: horizontalScale(10),
     flexDirection: "row",
