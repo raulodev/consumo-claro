@@ -37,8 +37,8 @@ export const Calculator: React.FC<CalculatorProp> = ({ onClose }) => {
       <TextInput
         style={styles.input}
         keyboardType="numeric"
-        cursorColor={palette.accents_7}
-        selectionColor={palette.accents_3}
+        cursorColor={palette.successLight}
+        selectionColor={palette.successLight}
         placeholder="Lectura 1 (o consumo en kwh)"
         autoFocus
         onChangeText={(text) => setFirstMeterCounter(text)}
@@ -48,8 +48,8 @@ export const Calculator: React.FC<CalculatorProp> = ({ onClose }) => {
       <TextInput
         style={styles.input}
         keyboardType="numeric"
-        cursorColor={palette.accents_7}
-        selectionColor={palette.accents_3}
+        cursorColor={palette.successLight}
+        selectionColor={palette.successLight}
         placeholder="Lectura 2"
         onChangeText={(text) => setSecondMeterCounter(text)}
         value={secondMeterCounter}

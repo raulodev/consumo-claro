@@ -170,13 +170,22 @@ export default function App() {
         }}>
         <View
           style={{
-            padding: 10,
-            paddingVertical: 40,
+            padding: moderateScale(10),
+            paddingTop: verticalScale(20),
+            gap: moderateScale(20),
           }}>
           <Image
             source={{ uri: image }}
             transition={500}
-            style={{ height: "100%", borderRadius: moderateScale(8), overflow: "hidden" }}
+            style={{ height: "80%", borderRadius: moderateScale(8), overflow: "hidden" }}
+          />
+          <Button
+            type="secondary"
+            title="Cerrar"
+            onPress={() => {
+              setShowModal(undefined);
+              setImage(undefined);
+            }}
           />
         </View>
       </Modal>
@@ -210,9 +219,9 @@ export default function App() {
             <View style={{ flexDirection: "row", gap: moderateScale(20) }}>
               <TextInput
                 keyboardType="numeric"
-                cursorColor={palette.accents_7}
-                selectionColor={palette.accents_3}
-                placeholder="kwh"
+                cursorColor={palette.successLight}
+                selectionColor={palette.successLight}
+                placeholder="Lectura"
                 style={styles.input}
                 onChangeText={(text) => setMeterCounter(text)}
                 value={meterCounter}
