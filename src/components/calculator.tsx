@@ -75,21 +75,21 @@ export default function Calculator() {
             circle
             title="1"
             style={style}
-            type="successLighter"
+            type="successLight"
             onPress={() => handlerClick("1")}
           />
           <Button
             circle
             title="2"
             style={style}
-            type="successLighter"
+            type="successLight"
             onPress={() => handlerClick("2")}
           />
           <Button
             circle
             title="3"
             style={style}
-            type="successLighter"
+            type="successLight"
             onPress={() => handlerClick("3")}
           />
         </View>
@@ -98,21 +98,21 @@ export default function Calculator() {
             circle
             title="4"
             style={style}
-            type="successLighter"
+            type="successLight"
             onPress={() => handlerClick("4")}
           />
           <Button
             circle
             title="5"
             style={style}
-            type="successLighter"
+            type="successLight"
             onPress={() => handlerClick("5")}
           />
           <Button
             circle
             title="6"
             style={style}
-            type="successLighter"
+            type="successLight"
             onPress={() => handlerClick("6")}
           />
         </View>
@@ -121,21 +121,21 @@ export default function Calculator() {
             circle
             title="7"
             style={style}
-            type="successLighter"
+            type="successLight"
             onPress={() => handlerClick("7")}
           />
           <Button
             circle
             title="8"
             style={style}
-            type="successLighter"
+            type="successLight"
             onPress={() => handlerClick("8")}
           />
           <Button
             circle
             title="9"
             style={style}
-            type="successLighter"
+            type="successLight"
             onPress={() => handlerClick("9")}
           />
         </View>
@@ -153,7 +153,7 @@ export default function Calculator() {
             circle
             title="0"
             style={style}
-            type="successLighter"
+            type="successLight"
             onPress={() => handlerClick("0")}
           />
           <Button
@@ -179,14 +179,14 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: palette.background,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
     padding: 20,
   },
   row_btns: {
     flexDirection: "row",
     display: "flex",
     justifyContent: "center",
-    gap: moderateScale(30),
-    marginTop: verticalScale(35),
+    gap: moderateScale(15),
+    marginTop: verticalScale(10),
   },
 });
