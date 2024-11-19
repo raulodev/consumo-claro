@@ -60,6 +60,7 @@ export const AddRegister: React.FC<AddRegisterProps> = ({
           placeholder="Lectura"
           defaultValue={meterCounter.toString()}
           style={{ flex: 1 }}
+          autoFocus
         />
 
         <Button

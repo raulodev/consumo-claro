@@ -21,7 +21,6 @@ export const Input: React.FC<InputProps> = ({ onGetValue, style, ...prop }) => {
           onGetValue(parseInt(text));
         }
       }}
-      autoFocus
       {...prop}
     />
   );
