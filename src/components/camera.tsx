@@ -1,4 +1,5 @@
 import { CameraView, CameraType, FlashMode } from "expo-camera";
+import * as ExpoFileSystem from "expo-file-system";
 import { Image } from "expo-image";
 import React, { useState, useRef } from "react";
 import { StyleSheet, View } from "react-native";
@@ -37,8 +38,17 @@ export const Camera: React.FC<CameraProps> = ({ getImage, back }) => {
     }
   }
 
-  function savePicture() {
-    if (image && image) getImage(image);
+  async function savePicture() {
+    if (image) {
+      const date = new Date();
+      const timestamp = date.getTime();
+      const imageUrl = ExpoFileSystem.documentDirectory + `${timestamp}.jpg`;
+      ExpoFileSystem.copyAsync({
+        from: image,
+        to: imageUrl,
+      });
+      getImage(imageUrl);
+    }
   }
 
   return (
