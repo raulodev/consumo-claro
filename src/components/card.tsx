@@ -92,28 +92,24 @@ export const Card: React.FC<CardProps> = ({
               )}
             </View>
             <View style={{ flex: 1 }}>
-              <View style={{ marginBottom: verticalScale(2) }}>
-                <Text
-                  style={{
-                    color: palette.accents_7,
-                    fontSize: moderateScale(16),
-                    fontWeight: 500,
-                  }}>
-                  {`${register.day} ${month(register.month)}`}
-                </Text>
-              </View>
-              <View>
-                <Text style={{ color: palette.accents_4, fontSize: moderateScale(16) }}>
+              <View
+                style={{
+                  marginBottom: verticalScale(2),
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}>
+                <Text numberOfLines={1} style={styles.kwh}>
                   {register.read} kwh
                 </Text>
+                <Text style={styles.date}>{`${register.day} ${month(register.month)}`}</Text>
               </View>
-            </View>
-            <View style={{ padding: 4 }}>
-              {prevRegister && (
-                <Text style={{ color: palette.accents_7 }}>
-                  + {calculateElectricityCost(register.read - prevRegister.read)} $
+              <View>
+                <Text style={styles.price}>
+                  {prevRegister
+                    ? `+ ${calculateElectricityCost(register.read - prevRegister.read)} $`
+                    : "0 $"}
                 </Text>
-              )}
+              </View>
             </View>
           </View>
         </View>
@@ -138,4 +134,16 @@ const styles = StyleSheet.create({
   view: {
     justifyContent: "center",
   },
+
+  date: {
+    color: palette.accents_7,
+    fontSize: moderateScale(14),
+    fontWeight: 500,
+  },
+  kwh: {
+    color: palette.accents_7,
+    fontSize: moderateScale(17),
+    fontWeight: 500,
+  },
+  price: { color: palette.accents_4 },
 });
