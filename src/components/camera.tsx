@@ -5,7 +5,7 @@ import { StyleSheet, View } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 
 import { Button } from "./button";
-import { moderateScale } from "../utils/metrics";
+import { moderateScale, verticalScale } from "../utils/metrics";
 
 interface CameraProps {
   getImage: (image: string) => void;
@@ -42,9 +42,9 @@ export const Camera: React.FC<CameraProps> = ({ getImage, back }) => {
   }
 
   return (
-    <Animated.View style={styles.container} entering={FadeIn}>
+    <Animated.View entering={FadeIn}>
       {image ? (
-        <View style={{ flex: 1, gap: moderateScale(20) }}>
+        <View style={{ gap: moderateScale(20) }}>
           <Image source={image} style={styles.image} transition={500} contentFit="cover" />
           <Button onPress={savePicture} type="successLight" title="Aceptar" />
           <Button
@@ -55,17 +55,20 @@ export const Camera: React.FC<CameraProps> = ({ getImage, back }) => {
           />
         </View>
       ) : (
-        <View>
-          <CameraView
-            animateShutter={false}
-            ref={cameraRef}
-            style={styles.camera}
-            facing={facing}
-            flash={flash}
-            onCameraReady={() => {
-              setCameraReady(true);
-            }}></CameraView>
-          <View style={styles.buttonContainer}>
+        <View style={{ gap: moderateScale(20) }}>
+          <View style={styles.cameraContainer}>
+            <CameraView
+              animateShutter={false}
+              ref={cameraRef}
+              style={styles.camera}
+              facing={facing}
+              flash={flash}
+              onCameraReady={() => {
+                setCameraReady(true);
+              }}></CameraView>
+          </View>
+
+          <View style={styles.buttonSettingContainer}>
             <Button icon="return-up-back" circle onPress={back} type="successLight" />
             <Button
               icon={flash === "on" ? "flash" : "flash-off"}
@@ -100,26 +103,20 @@ export const Camera: React.FC<CameraProps> = ({ getImage, back }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    height: 300,
-    justifyContent: "center",
-    backgroundColor: "transparent",
-    padding: 10,
+  cameraContainer: {
+    borderRadius: moderateScale(8),
+    overflow: "hidden",
   },
-
   camera: {
-    height: "50%",
+    height: verticalScale(300),
   },
-  buttonContainer: {
+  buttonSettingContainer: {
     flexDirection: "row",
     alignItems: "flex-end",
-    justifyContent: "space-between",
-    backgroundColor: "transparent",
-    margin: 64,
+    justifyContent: "space-around",
   },
   image: {
-    height: "50%",
+    height: verticalScale(300),
     borderRadius: moderateScale(8),
     overflow: "hidden",
   },

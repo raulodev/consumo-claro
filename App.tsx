@@ -1,7 +1,8 @@
-import registerRootComponent from "expo/build/launch/registerRootComponent";
+import { registerRootComponent } from "expo";
 import { useCameraPermissions } from "expo-camera";
 import { Image } from "expo-image";
 import { StatusBar } from "expo-status-bar";
+import * as SplashScreen from "expo-splash-screen";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TextInput, FlatList } from "react-native";
 
@@ -25,6 +26,8 @@ import { Register } from "./src/lib/interfaces";
 import { palette } from "./src/utils/colors";
 import { horizontalScale, moderateScale, verticalScale } from "./src/utils/metrics";
 import { calculateElectricityCost } from "./src/utils/tariff";
+
+SplashScreen.preventAutoHideAsync();
 
 type modals = "calculator" | "add-register" | "image-view";
 
@@ -62,6 +65,8 @@ export default function App() {
           ),
         );
       }
+
+      await SplashScreen.hideAsync();
     }
     init();
 
