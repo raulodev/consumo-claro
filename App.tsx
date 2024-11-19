@@ -1,15 +1,13 @@
 import { registerRootComponent } from "expo";
-import { useCameraPermissions } from "expo-camera";
 import { Image } from "expo-image";
 import { StatusBar } from "expo-status-bar";
-import * as SplashScreen from "expo-splash-screen";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput, FlatList } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 
+import { AddRegister } from "./src/components/add-register";
 import { Alert } from "./src/components/alert";
 import { Button } from "./src/components/button";
 import { Calculator } from "./src/components/calculator";
-import { Camera } from "./src/components/camera";
 import { Card } from "./src/components/card";
 import { FloatingButton } from "./src/components/floating-buttons";
 import { ListEmpty } from "./src/components/list-empty";
@@ -27,25 +25,20 @@ import { palette } from "./src/utils/colors";
 import { horizontalScale, moderateScale, verticalScale } from "./src/utils/metrics";
 import { calculateElectricityCost } from "./src/utils/tariff";
 
-SplashScreen.preventAutoHideAsync();
-
 type modals = "calculator" | "add-register" | "image-view";
 
 export default function App() {
-  const [permission, requestPermission] = useCameraPermissions();
   const [showModal, setShowModal] = useState<modals>();
+  const [image, setImage] = useState<string>();
+  const [selectQuick, setSelectQuick] = useState<boolean>(false);
+  const [registerToUpdate, setRegisterToUpdate] = useState<Register>();
+  const [registers, setRegisters] = useState<Register[]>([]);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [cost, setCost] = useState<number>(0);
   const [showAlert, setshowAlert] = useState<{ open: boolean; message: string }>({
     open: false,
     message: "",
   });
-  const [selectQuick, setSelectQuick] = useState<boolean>(false);
-  const [showCamera, setShowCamera] = useState<boolean>(false);
-  const [registerToUpdate, setRegisterToUpdate] = useState<Register>();
-  const [registers, setRegisters] = useState<Register[]>([]);
-  const [meterCounter, setMeterCounter] = useState<string | undefined>("");
-  const [selected, setSelected] = useState<number[]>([]);
-  const [cost, setCost] = useState<number>(0);
-  const [image, setImage] = useState<string>();
 
   useEffect(() => {
     async function init() {
@@ -65,34 +58,94 @@ export default function App() {
           ),
         );
       }
-
-      await SplashScreen.hideAsync();
     }
     init();
 
-    if (selected.length > 0) setSelectQuick(true);
+    if (selectedIds.length > 0) setSelectQuick(true);
     else setSelectQuick(false);
-  }, [selected, showModal]);
+  }, [selectedIds, showModal]);
 
   const handlerAddToDelete = (id: number) => {
-    if (!selected.includes(id)) {
-      setSelected([...selected, id]);
+    if (!selectedIds.includes(id)) {
+      setSelectedIds([...selectedIds, id]);
     } else {
-      setSelected(selected.filter((item) => item !== id));
+      setSelectedIds(selectedIds.filter((item) => item !== id));
     }
   };
 
-  const restartSelect = () => {
-    if (selected.length === registers.length) {
-      setSelected((current) => []);
+  const handlerRestartSelect = () => {
+    if (selectedIds.length === registers.length) {
+      setSelectedIds((current) => []);
     } else {
       const allIds = registers.map((item) => item.id);
-      setSelected(allIds);
+      setSelectedIds(allIds);
     }
+  };
+
+  const handlerAddOrUpdateRegister = async (value: number, image: string | undefined) => {
+    // Evitar agregar un registro mayor al registro siguiente si existe
+    // y menor al anterior si existe
+
+    if (registerToUpdate) {
+      let prevRecord: Register | undefined;
+      let nextRecord: Register | undefined;
+      for (let index = 0; index < registers.length; index++) {
+        const record = registers[index];
+        if (record.id === registerToUpdate.id) {
+          prevRecord = registers[index - 1];
+          nextRecord = registers[index + 1];
+        }
+      }
+
+      if (prevRecord && prevRecord.read >= value) {
+        setshowAlert({
+          ...showAlert,
+          open: true,
+          message: `Esta lectura no puede ser menor o igual a ${prevRecord?.read}`,
+        });
+        return;
+      }
+      if (nextRecord && nextRecord.read <= value) {
+        setshowAlert({
+          ...showAlert,
+          open: true,
+          message: `Esta lectura no puede ser mayor o igual a ${nextRecord?.read}`,
+        });
+        return;
+      }
+      await updateRegister(registerToUpdate.id, value, image);
+      setRegisterToUpdate(undefined);
+    } else {
+      const lastRecord = registers[registers.length - 1];
+
+      if (lastRecord && lastRecord.read >= value) {
+        setshowAlert({
+          ...showAlert,
+          open: true,
+          message: `Esta lectura no puede ser menor o igual a ${lastRecord.read}`,
+        });
+        return;
+      }
+
+      const date = new Date();
+      await insertRegister(
+        date.getDay(),
+        date.getMonth(),
+        date.getFullYear(),
+        date.getTime(),
+        value,
+        image,
+      );
+    }
+
+    setShowModal(undefined);
   };
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={palette.successLight} style="light" />
+      <TopBar count={cost} rightAction={handlerRestartSelect} />
+
       <Alert
         message={showAlert.message}
         open={showAlert.open}
@@ -100,10 +153,6 @@ export default function App() {
           setshowAlert({ ...showAlert, open: false, message: "" });
         }}
       />
-
-      <StatusBar backgroundColor={palette.successLight} style="light" />
-
-      <TopBar count={cost} rightAction={restartSelect} />
 
       <FlatList
         ListEmptyComponent={<ListEmpty />}
@@ -113,10 +162,10 @@ export default function App() {
             register={item}
             onSelect={handlerAddToDelete}
             isSelectQuick={selectQuick}
-            selected={selected}
+            selected={selectedIds}
             onGetImage={(image) => {
-              setShowModal("image-view");
               setImage(image);
+              setShowModal("image-view");
             }}
             prevRegister={registers[index - 1]}
           />
@@ -125,30 +174,30 @@ export default function App() {
         ListFooterComponent={<View style={{ height: 100 }}></View>}
       />
 
-      {selected.length === 1 && (
+      {selectedIds.length === 1 && (
         <FloatingButton
           icon="pencil"
           animate
           style={{ bottom: moderateScale(260), right: moderateScale(20) }}
           onPress={async () => {
             setShowModal("add-register");
-            const editRegister = registers.filter((item) => item.id === selected[0]);
+            const editRegister = registers.filter((item) => item.id === selectedIds[0]);
             setRegisterToUpdate(editRegister[0]);
           }}
         />
       )}
 
-      {selected.length > 0 && (
+      {selectedIds.length > 0 && (
         <FloatingButton
           icon="trash"
           iconColor={palette.error}
           animate
           style={{ bottom: moderateScale(180), right: moderateScale(20) }}
           onPress={async () => {
-            selected.forEach(async (id) => {
+            selectedIds.forEach(async (id) => {
               await deleteRegister(id);
             });
-            setSelected([]);
+            setSelectedIds([]);
             setSelectQuick(false);
           }}
         />
@@ -171,25 +220,25 @@ export default function App() {
         open={showModal === "image-view"}
         onAction={() => {
           setShowModal(undefined);
-          setImage(undefined);
         }}>
         <View
           style={{
-            padding: moderateScale(10),
-            paddingTop: verticalScale(20),
             gap: moderateScale(20),
           }}>
           <Image
             source={{ uri: image }}
             transition={500}
-            style={{ height: "80%", borderRadius: moderateScale(8), overflow: "hidden" }}
+            style={{
+              height: verticalScale(300),
+              borderRadius: moderateScale(8),
+              overflow: "hidden",
+            }}
           />
           <Button
             type="secondary"
             title="Cerrar"
             onPress={() => {
               setShowModal(undefined);
-              setImage(undefined);
             }}
           />
         </View>
@@ -203,137 +252,16 @@ export default function App() {
         open={showModal === "add-register"}
         onAction={() => {
           setShowModal(undefined);
-          setImage(undefined);
+          setRegisterToUpdate(undefined);
         }}>
-        {showCamera ? (
-          <Camera
-            back={() => setShowCamera(false)}
-            getImage={(image) => {
-              setImage(image);
-              setShowCamera(false);
-            }}
-          />
-        ) : (
-          <View
-            style={{
-              paddingHorizontal: horizontalScale(15),
-              marginTop: verticalScale(20),
-              gap: moderateScale(20),
-            }}>
-            <Text style={styles.label}>Agregar lectura</Text>
-            <View style={{ flexDirection: "row", gap: moderateScale(20) }}>
-              <TextInput
-                keyboardType="numeric"
-                cursorColor={palette.successLight}
-                selectionColor={palette.successLight}
-                placeholder="Lectura"
-                style={styles.input}
-                onChangeText={(text) => setMeterCounter(text)}
-                value={meterCounter}
-                defaultValue={registerToUpdate ? registerToUpdate.read.toString() : meterCounter}
-                autoFocus
-              />
-
-              <Button
-                circle
-                icon={image ? "checkmark" : "camera"}
-                type="successLight"
-                onPress={async () => {
-                  if (permission && !permission.granted) {
-                    const response = await requestPermission();
-                    if (response.granted) {
-                      setShowCamera(true);
-                    }
-                  } else {
-                    setShowCamera(true);
-                  }
-                }}
-              />
-            </View>
-
-            <Button
-              title={registerToUpdate ? "Actualizar" : "Guardar"}
-              type="successLight"
-              onPress={async () => {
-                if (meterCounter && meterCounter.length > 0) {
-                  if (registerToUpdate) {
-                    // Evitar agregar un registro mayor al registro siguiente si existe
-                    // y menor al anterior si existe
-
-                    let prevRecord: Register | undefined;
-                    let nextRecord: Register | undefined;
-
-                    for (let index = 0; index < registers.length; index++) {
-                      const record = registers[index];
-
-                      if (record.id === registerToUpdate.id) {
-                        prevRecord = registers[index - 1];
-                        nextRecord = registers[index + 1];
-                      }
-                    }
-
-                    if (prevRecord && prevRecord.read >= Number(meterCounter)) {
-                      setshowAlert({
-                        ...showAlert,
-                        open: true,
-                        message: `Esta lectura no puede ser menor o igual a ${prevRecord?.read}`,
-                      });
-                      return;
-                    }
-
-                    if (nextRecord && nextRecord.read <= Number(meterCounter)) {
-                      setshowAlert({
-                        ...showAlert,
-                        open: true,
-                        message: `Esta lectura no puede ser mayor o igual a ${nextRecord?.read}`,
-                      });
-                      return;
-                    }
-
-                    await updateRegister(registerToUpdate.id, Number(meterCounter), image);
-                    setRegisterToUpdate(undefined);
-                  } else {
-                    const lastRecord = registers[registers.length - 1];
-                    // Evitar agregar un registro menor al anterior existente
-                    if (registers.length >= 1 && Number(meterCounter) <= lastRecord.read) {
-                      setshowAlert({
-                        ...showAlert,
-                        open: true,
-                        message: `Esta lectura no puede ser menor o igual a ${lastRecord.read}`,
-                      });
-                      return;
-                    }
-
-                    const date = new Date();
-
-                    await insertRegister(
-                      date.getDay(),
-                      date.getMonth(),
-                      date.getFullYear(),
-                      date.getTime(),
-                      Number(meterCounter),
-                      image,
-                    );
-                  }
-
-                  setMeterCounter(undefined); // Restablecer el valor de la entrada
-                  setShowModal(undefined);
-                  setImage(undefined);
-                }
-              }}
-            />
-            <Button
-              title="Cancelar"
-              type="secondary"
-              onPress={() => {
-                setShowModal(undefined);
-                setRegisterToUpdate(undefined);
-                setMeterCounter(undefined);
-                setImage(undefined);
-              }}
-            />
-          </View>
-        )}
+        <AddRegister
+          onAddOrUpdateRegister={handlerAddOrUpdateRegister}
+          onClose={() => {
+            setShowModal(undefined);
+            setRegisterToUpdate(undefined);
+          }}
+          register={registerToUpdate}
+        />
       </Modal>
     </View>
   );

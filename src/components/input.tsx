@@ -1,22 +1,19 @@
 import React from "react";
 import { moderateScale } from "../utils/metrics";
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, TextInputProps } from "react-native";
 import { palette } from "../utils/colors";
 
-interface InputProps {
+interface InputProps extends TextInputProps {
   onGetValue: (value: number) => void;
-  defaultValue?: string;
-  placeholder?: string;
 }
 
-export const Input: React.FC<InputProps> = ({ defaultValue, placeholder, onGetValue }) => {
+export const Input: React.FC<InputProps> = ({ onGetValue, style, ...prop }) => {
   return (
     <TextInput
       keyboardType="numeric"
       cursorColor={palette.successLight}
       selectionColor={palette.successLight}
-      placeholder={placeholder}
-      style={styles.input}
+      style={[styles.input, style]}
       onChangeText={(text) => {
         if (!text) {
           onGetValue(0);
@@ -24,8 +21,8 @@ export const Input: React.FC<InputProps> = ({ defaultValue, placeholder, onGetVa
           onGetValue(parseInt(text));
         }
       }}
-      defaultValue={defaultValue}
       autoFocus
+      {...prop}
     />
   );
 };
@@ -37,6 +34,6 @@ const styles = StyleSheet.create({
     borderColor: palette.accents_5,
     borderRadius: moderateScale(5),
     padding: moderateScale(8),
-    flex: 1,
+    width: "100%",
   },
 });

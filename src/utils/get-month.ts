@@ -1,17 +1,17 @@
 export const month = (mon_number: number) => {
   const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
+    "Ene",
+    "Feb",
+    "Mar",
+    "Abr",
+    "May",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dic",
   ];
 
   return months[mon_number];
