@@ -47,10 +47,8 @@ export default function App() {
       const allRegisters = await getAllRegisters();
       setRegisters(allRegisters);
 
-      if (allRegisters.length === 0) {
+      if (allRegisters.length <= 1) {
         setCost(0);
-      } else if (allRegisters.length === 1) {
-        setCost(calculateElectricityCost(allRegisters[0].read));
       } else {
         setCost(
           calculateElectricityCost(
