@@ -2,6 +2,8 @@ import { Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
+const heightScreen = height;
+
 const guideWidth = 384;
 const guideHeight = 785;
 
@@ -23,7 +25,7 @@ const horizontalScale = (size: number) => (width / guideWidth) * size;
 const moderateScale = (size: number, factor: number = 0.5) =>
   size + (horizontalScale(size) - size) * factor;
 
-export { horizontalScale, verticalScale, moderateScale };
+export { horizontalScale, verticalScale, moderateScale, heightScreen };
 
 /*
 FUNCTIONS           USAGE
