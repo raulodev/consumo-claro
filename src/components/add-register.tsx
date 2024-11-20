@@ -21,12 +21,12 @@ export const AddRegister: React.FC<AddRegisterProps> = ({
   register,
 }) => {
   const [permission, requestPermission] = useCameraPermissions();
-  const [meterCounter, setMeterCounter] = useState<number>(0);
+  const [meterCounter, setMeterCounter] = useState<number>();
   const [image, setImage] = useState<string>();
   const [showCamera, setShowCamera] = useState<boolean>(false);
 
   const handlerRestart = () => {
-    setMeterCounter(0);
+    setMeterCounter(undefined);
     setImage(undefined);
   };
 
@@ -59,7 +59,7 @@ export const AddRegister: React.FC<AddRegisterProps> = ({
         <Input
           onGetValue={(value) => setMeterCounter(value)}
           placeholder="Lectura"
-          defaultValue={meterCounter.toString()}
+          defaultValue={meterCounter?.toString() || ""}
           style={{ flex: 1 }}
           autoFocus
         />
@@ -84,8 +84,10 @@ export const AddRegister: React.FC<AddRegisterProps> = ({
       <Button
         title={register ? "Actualizar" : "Guardar"}
         type="successLight"
-        disabled={meterCounter === 0}
-        onPress={() => onAddOrUpdateRegister(meterCounter, image)}
+        disabled={!meterCounter}
+        onPress={() => {
+          if (meterCounter) onAddOrUpdateRegister(meterCounter, image);
+        }}
       />
       <Button
         title="Cancelar"

@@ -37,13 +37,17 @@ export const Calculator: React.FC<CalculatorProps> = ({ onClose }) => {
       <Label text={`$ ${precie.toString()}`} />
 
       <Input
-        onGetValue={(value) => setFirstMeterCounter(value.toString())}
+        onGetValue={(value) => {
+          if (value) setFirstMeterCounter(value.toString());
+        }}
         placeholder="Lectura 1 (o consumo en kwh)"
         autoFocus
       />
 
       <Input
-        onGetValue={(value) => setSecondMeterCounter(value.toString())}
+        onGetValue={(value) => {
+          if (value) setSecondMeterCounter(value.toString());
+        }}
         placeholder="Lectura 2"
       />
 

@@ -5,7 +5,7 @@ import { palette } from "../utils/colors";
 import { moderateScale } from "../utils/metrics";
 
 interface InputProps extends TextInputProps {
-  onGetValue: (value: number) => void;
+  onGetValue: (value: number | undefined) => void;
 }
 
 export const Input: React.FC<InputProps> = ({ onGetValue, style, ...prop }) => {
@@ -16,11 +16,8 @@ export const Input: React.FC<InputProps> = ({ onGetValue, style, ...prop }) => {
       selectionColor={palette.successLight}
       style={[styles.input, style]}
       onChangeText={(text) => {
-        if (!text) {
-          onGetValue(0);
-        } else {
-          onGetValue(parseInt(text, 10));
-        }
+        if (text) onGetValue(parseInt(text, 10));
+        else onGetValue(undefined);
       }}
       {...prop}
     />
