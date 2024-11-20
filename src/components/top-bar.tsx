@@ -50,7 +50,5 @@ const styles = StyleSheet.create({
   subcontainer: {
     alignItems: "center",
     justifyContent: "center",
-    // borderWidth: 1,
-    // borderColor: "black",
   },
 });
