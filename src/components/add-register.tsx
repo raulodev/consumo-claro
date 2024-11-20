@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
 import { useCameraPermissions } from "expo-camera";
-import { moderateScale } from "../utils/metrics";
+import React, { useState, useEffect } from "react";
 import { View } from "react-native";
+
 import { Button } from "./button";
+import { Camera } from "./camera";
 import { Input } from "./input";
 import { Label } from "./label";
-import { Camera } from "./camera";
 import { Register } from "../lib/interfaces";
+import { moderateScale } from "../utils/metrics";
 
 interface AddRegisterProps {
   onClose: () => void;

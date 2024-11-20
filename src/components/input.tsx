@@ -1,7 +1,8 @@
 import React from "react";
-import { moderateScale } from "../utils/metrics";
 import { StyleSheet, TextInput, TextInputProps } from "react-native";
+
 import { palette } from "../utils/colors";
+import { moderateScale } from "../utils/metrics";
 
 interface InputProps extends TextInputProps {
   onGetValue: (value: number) => void;
@@ -18,7 +19,7 @@ export const Input: React.FC<InputProps> = ({ onGetValue, style, ...prop }) => {
         if (!text) {
           onGetValue(0);
         } else {
-          onGetValue(parseInt(text));
+          onGetValue(parseInt(text, 10));
         }
       }}
       {...prop}

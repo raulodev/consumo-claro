@@ -22,7 +22,7 @@ import {
 } from "./src/lib/database";
 import { Register } from "./src/lib/interfaces";
 import { palette } from "./src/utils/colors";
-import { horizontalScale, moderateScale, verticalScale } from "./src/utils/metrics";
+import { moderateScale, verticalScale } from "./src/utils/metrics";
 import { calculateElectricityCost } from "./src/utils/tariff";
 
 type modals = "calculator" | "add-register" | "image-view";

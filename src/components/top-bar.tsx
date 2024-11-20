@@ -20,7 +20,7 @@ export const TopBar: React.FC<TopBarProps> = ({ count = 0, rightAction }) => {
   return (
     <View style={styles.container}>
       <View style={styles.subcontainer}>
-        <Text style={[styles.text, { fontSize: fontSize }]}>$ {count}</Text>
+        <Text style={[styles.text, { fontSize }]}>$ {count}</Text>
       </View>
       <View
         style={styles.subcontainer}

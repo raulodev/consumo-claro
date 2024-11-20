@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { Button } from "./button";
+import { Input } from "./input";
+import { Label } from "./label";
 import { palette } from "../utils/colors";
 import { moderateScale } from "../utils/metrics";
 import { calculateElectricityCost } from "../utils/tariff";
-import { Input } from "./input";
-import { Label } from "./label";
 
 interface CalculatorProps {
   onClose: () => void;

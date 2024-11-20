@@ -1,7 +1,8 @@
 import React from "react";
-import { moderateScale } from "../utils/metrics";
 import { StyleSheet, Text } from "react-native";
+
 import { palette } from "../utils/colors";
+import { moderateScale } from "../utils/metrics";
 
 interface LabelProps {
   text: string;
