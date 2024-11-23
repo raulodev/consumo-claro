@@ -39,6 +39,7 @@ export const Calculator: React.FC<CalculatorProps> = ({ onClose }) => {
       <Input
         onGetValue={(value) => {
           if (value) setFirstMeterCounter(value.toString());
+          else setFirstMeterCounter("0");
         }}
         placeholder="Lectura 1 (o consumo en kwh)"
         autoFocus
@@ -47,6 +48,7 @@ export const Calculator: React.FC<CalculatorProps> = ({ onClose }) => {
       <Input
         onGetValue={(value) => {
           if (value) setSecondMeterCounter(value.toString());
+          else setSecondMeterCounter("0");
         }}
         placeholder="Lectura 2"
       />
