@@ -16,8 +16,7 @@ export const Input: React.FC<InputProps> = ({ onGetValue, style, ...prop }) => {
       selectionColor={palette.successLight}
       style={[styles.input, style]}
       onChangeText={(text) => {
-        if (text) onGetValue(parseInt(text, 10));
-        else onGetValue(undefined);
+        onGetValue(text ? parseInt(text, 10) : undefined);
       }}
       {...prop}
     />
