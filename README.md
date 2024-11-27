@@ -4,7 +4,7 @@
 
 Aplicación android para ayudar controlar el consumo de electricidad en los hogares de Cuba🇨🇺
 
-Version 2.0.1
+Version 2.0.2
 
 - Actualizada la tarifa a partir de marzo del 2024
 - Cambio del diseño de la aplicación
