@@ -126,8 +126,9 @@ export default function App() {
       }
 
       const date = new Date();
+
       await insertRegister(
-        date.getDay(),
+        date.getDate(),
         date.getMonth(),
         date.getFullYear(),
         date.getTime(),
