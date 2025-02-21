@@ -66,7 +66,7 @@ export const AddRegister: React.FC<AddRegisterProps> = ({
 
         <Button
           circle
-          icon={image ? "checkmark" : "camera"}
+          icon={image ? "repeat" : "camera"}
           type="successLight"
           onPress={async () => {
             if (permission && !permission.granted) {
