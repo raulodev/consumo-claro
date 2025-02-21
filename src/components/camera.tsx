@@ -97,11 +97,7 @@ export const Camera: React.FC<CameraProps> = ({ getImage, back }) => {
               icon="camera"
               circle
               type={cameraReady ? "successLight" : "secondary"}
-              style={{
-                borderRadius: 60 / 2,
-                width: 60,
-                height: 60,
-              }}
+              style={styles.buttonCamera}
               onPress={takePicture}
             />
           </View>
@@ -128,5 +124,10 @@ const styles = StyleSheet.create({
     height: 300,
     borderRadius: 8,
     overflow: "hidden",
+  },
+  buttonCamera: {
+    borderRadius: 60 / 2,
+    width: 60,
+    height: 60,
   },
 });

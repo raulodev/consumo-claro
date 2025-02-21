@@ -1,6 +1,6 @@
 import { useCameraPermissions } from "expo-camera";
 import React, { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import { Button } from "./button";
 import { Camera } from "./camera";
@@ -48,18 +48,15 @@ export const AddRegister: React.FC<AddRegisterProps> = ({
     );
 
   return (
-    <View
-      style={{
-        gap: 20,
-      }}>
+    <View style={styles.container}>
       <Label text="Agregar lectura" />
 
-      <View style={{ flexDirection: "row", gap: 20 }}>
+      <View style={styles.subContainer}>
         <Input
           onGetValue={(value) => setMeterCounter(value)}
           placeholder="Lectura"
           defaultValue={meterCounter?.toString() || ""}
-          style={{ flex: 1 }}
+          style={styles.input}
           autoFocus
         />
 
@@ -99,3 +96,16 @@ export const AddRegister: React.FC<AddRegisterProps> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 20,
+  },
+  subContainer: {
+    flexDirection: "row",
+    gap: 20,
+  },
+  input: {
+    flex: 1,
+  },
+});
