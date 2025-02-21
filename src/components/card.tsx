@@ -8,7 +8,6 @@ import { Register } from "../lib/interfaces";
 import { palette } from "../utils/colors";
 import { month } from "../utils/get-month";
 import { verticalScale, moderateScale, horizontalScale } from "../utils/metrics";
-import { calculateElectricityCost } from "../utils/tariff";
 
 interface CardProps {
   register: Register;
