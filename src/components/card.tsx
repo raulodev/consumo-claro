@@ -16,7 +16,6 @@ interface CardProps {
   isSelectQuick?: boolean;
   selected: number[];
   onGetImage: (image: string) => void;
-  prevRegister: Register;
 }
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
@@ -27,7 +26,6 @@ export const Card: React.FC<CardProps> = ({
   isSelectQuick,
   selected,
   onGetImage,
-  prevRegister,
 }) => {
   const select = (vibrate = true) => {
     onSelect(register.id);
@@ -105,9 +103,7 @@ export const Card: React.FC<CardProps> = ({
               </View>
               <View>
                 <Text style={styles.price}>
-                  {prevRegister
-                    ? `+ ${calculateElectricityCost(register.read - prevRegister.read)} $`
-                    : "0 $"}
+                  {register.cost === 0 ? "Lectura inicial" : `${register.cost} $`}
                 </Text>
               </View>
             </View>

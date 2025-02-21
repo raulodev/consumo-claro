@@ -20,7 +20,7 @@ import {
   deleteRegister,
   updateRegister,
 } from "./src/lib/database";
-import { Register } from "./src/lib/interfaces";
+import { RateTariff, Register } from "./src/lib/interfaces";
 import { palette } from "./src/utils/colors";
 import { moderateScale, verticalScale } from "./src/utils/metrics";
 import { calculateElectricityCost } from "./src/utils/tariff";
@@ -50,10 +50,25 @@ export default function App() {
       if (allRegisters.length <= 1) {
         setCost(0);
       } else {
+        let initRate: RateTariff;
+        allRegisters.map((register, index, list) => {
+          if (index > 0) {
+            const { cost, rate } = calculateElectricityCost(
+              register.read - list[index - 1].read,
+              initRate,
+            );
+            initRate = rate;
+            register.cost = cost;
+          } else {
+            register.cost = 0;
+          }
+          return register;
+        });
+
         setCost(
           calculateElectricityCost(
             allRegisters[allRegisters.length - 1].read - allRegisters[0].read,
-          ),
+          ).cost,
         );
       }
     }
@@ -166,7 +181,6 @@ export default function App() {
               setImage(image);
               setShowModal("image-view");
             }}
-            prevRegister={registers[index - 1]}
           />
         )}
         keyExtractor={(item) => item.id.toString()}

@@ -39,7 +39,7 @@ export const calculateElectricityCost = (kwh: number, initRate?: RateTariff) => 
 
       totalCost += currentCost;
       remainingKwh -= current.limit;
-      rate = structuredClone(current);
+      rate = clone(current);
     } else if (remainingKwh > 0) {
       const range = current.limit > prev.limit ? current.limit - prev.limit : current.limit;
 
@@ -55,13 +55,13 @@ export const calculateElectricityCost = (kwh: number, initRate?: RateTariff) => 
 
       remainingKwh -= range;
 
-      rate = structuredClone(current);
+      rate = clone(current);
     }
   }
 
   if (remainingKwh === 0) {
     // set next tariff
-    rate = structuredClone(tariffs[rate.index + 1]);
+    rate = clone(tariffs[rate.index + 1]);
   } else if (remainingKwh < 0) {
     rate.limit = remainingKwh * -1;
   }
@@ -70,4 +70,8 @@ export const calculateElectricityCost = (kwh: number, initRate?: RateTariff) => 
     cost: totalCost / 100,
     rate,
   };
+};
+
+const clone = (object: Object) => {
+  return JSON.parse(JSON.stringify(object));
 };
