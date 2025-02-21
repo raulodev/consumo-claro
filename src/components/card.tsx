@@ -101,7 +101,7 @@ export const Card: React.FC<CardProps> = ({
               </View>
               <View>
                 <Text style={styles.price}>
-                  {register.cost === 0 ? "Lectura inicial" : `${register.cost} $`}
+                  {!register.cost ? "Lectura inicial" : `${register.cost} $`}
                 </Text>
               </View>
             </View>
