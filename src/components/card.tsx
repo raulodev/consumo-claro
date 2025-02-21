@@ -93,9 +93,15 @@ export const Card: React.FC<CardProps> = ({
                   marginBottom: 2,
                   flexDirection: "row",
                   justifyContent: "space-between",
+                  position: "relative",
                 }}>
                 <Text numberOfLines={1} style={styles.kwh}>
-                  {register.read} kwh
+                  {register.read.toString().length > 15
+                    ? register.read
+                        .toString()
+                        .replace(register.read.toString().slice(0, -13), "....")
+                    : register.read}{" "}
+                  kwh
                 </Text>
                 <Text style={styles.date}>{`${register.day} ${month(register.month)}`}</Text>
               </View>
@@ -133,6 +139,9 @@ const styles = StyleSheet.create({
     color: palette.accents_7,
     fontSize: 14,
     fontWeight: 500,
+    position: "absolute",
+    top: 0,
+    right: 0,
   },
   kwh: {
     color: palette.accents_7,
