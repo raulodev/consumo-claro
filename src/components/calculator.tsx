@@ -5,7 +5,6 @@ import { Button } from "./button";
 import { Input } from "./input";
 import { Label } from "./label";
 import { palette } from "../utils/colors";
-import { moderateScale } from "../utils/metrics";
 import { calculateElectricityCost } from "../utils/tariff";
 
 interface CalculatorProps {
@@ -59,6 +58,6 @@ export const Calculator: React.FC<CalculatorProps> = ({ onClose }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: palette.background,
-    gap: moderateScale(20),
+    gap: 20,
   },
 });

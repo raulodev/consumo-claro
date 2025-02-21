@@ -22,7 +22,6 @@ import {
 } from "./src/lib/database";
 import { RateTariff, Register } from "./src/lib/interfaces";
 import { palette } from "./src/utils/colors";
-import { moderateScale, verticalScale } from "./src/utils/metrics";
 import { calculateElectricityCost } from "./src/utils/tariff";
 
 type modals = "calculator" | "add-register" | "image-view";
@@ -191,7 +190,7 @@ export default function App() {
         <FloatingButton
           icon="pencil"
           animate
-          style={{ bottom: moderateScale(260), right: moderateScale(20) }}
+          style={{ bottom: 260, right: 20 }}
           onPress={async () => {
             setShowModal("add-register");
             const editRegister = registers.filter((item) => item.id === selectedIds[0]);
@@ -205,7 +204,7 @@ export default function App() {
           icon="trash"
           iconColor={palette.error}
           animate
-          style={{ bottom: moderateScale(180), right: moderateScale(20) }}
+          style={{ bottom: 180, right: 20 }}
           onPress={async () => {
             selectedIds.forEach(async (id) => {
               await deleteRegister(id);
@@ -219,13 +218,13 @@ export default function App() {
       <FloatingButton
         icon="calculator"
         animate={false}
-        style={{ bottom: moderateScale(100), right: moderateScale(20) }}
+        style={{ bottom: 100, right: 20 }}
         onPress={() => setShowModal("calculator")}
       />
 
       <FloatingButton
         animate={false}
-        style={{ bottom: moderateScale(20), right: moderateScale(20) }}
+        style={{ bottom: 20, right: 20 }}
         onPress={() => setShowModal("add-register")}
       />
 
@@ -236,14 +235,14 @@ export default function App() {
         }}>
         <View
           style={{
-            gap: moderateScale(20),
+            gap: 20,
           }}>
           <Image
             source={{ uri: image }}
             transition={500}
             style={{
-              height: verticalScale(300),
-              borderRadius: moderateScale(8),
+              height: 300,
+              borderRadius: 8,
               overflow: "hidden",
             }}
           />
@@ -288,15 +287,15 @@ const styles = StyleSheet.create({
   },
   label: {
     color: palette.accents_7,
-    fontSize: moderateScale(18),
+    fontSize: 18,
     fontWeight: "500",
   },
   input: {
-    fontSize: moderateScale(18),
+    fontSize: 18,
     borderWidth: 0.25,
     borderColor: palette.accents_5,
-    borderRadius: moderateScale(5),
-    padding: moderateScale(8),
+    borderRadius: 5,
+    padding: 8,
     flex: 1,
   },
 });

@@ -3,7 +3,6 @@ import React from "react";
 import { Text, StyleSheet, Pressable, PressableProps, ViewStyle, View } from "react-native";
 
 import { palette } from "../utils/colors";
-import { verticalScale, horizontalScale, moderateScale } from "../utils/metrics";
 
 interface ButtonProps extends PressableProps {
   title?: string;
@@ -117,8 +116,8 @@ const themes = StyleSheet.create({
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: moderateScale(15),
-    lineHeight: moderateScale(21),
+    fontSize: 15,
+    lineHeight: 21,
     fontWeight: "600",
     letterSpacing: 0.25,
   },
@@ -127,11 +126,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: verticalScale(10),
-    paddingHorizontal: horizontalScale(32),
+    paddingVertical: 10,
+    paddingHorizontal: 32,
     borderRadius: 5,
     borderWidth: 0.5,
-    height: verticalScale(45),
+    height: 45,
   },
   circle: {
     borderRadius: 45 / 2,

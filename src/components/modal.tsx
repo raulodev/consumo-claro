@@ -3,7 +3,6 @@ import { StyleSheet, View, ViewProps } from "react-native";
 import Animated, { SlideInDown, SlideOutDown, FadeIn, FadeOut } from "react-native-reanimated";
 
 import { palette } from "../utils/colors";
-import { moderateScale, verticalScale } from "../utils/metrics";
 
 interface ModalProps extends ViewProps {
   open: boolean;
@@ -39,9 +38,9 @@ const styles = StyleSheet.create({
 
   modal: {
     backgroundColor: palette.background,
-    borderTopLeftRadius: moderateScale(10),
-    borderTopRightRadius: moderateScale(10),
-    padding: moderateScale(10),
-    paddingBottom: verticalScale(40),
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    padding: 10,
+    paddingBottom: 40,
   },
 });

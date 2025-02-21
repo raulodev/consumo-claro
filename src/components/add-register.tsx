@@ -7,7 +7,6 @@ import { Camera } from "./camera";
 import { Input } from "./input";
 import { Label } from "./label";
 import { Register } from "../lib/interfaces";
-import { moderateScale } from "../utils/metrics";
 
 interface AddRegisterProps {
   onClose: () => void;
@@ -51,11 +50,11 @@ export const AddRegister: React.FC<AddRegisterProps> = ({
   return (
     <View
       style={{
-        gap: moderateScale(20),
+        gap: 20,
       }}>
       <Label text="Agregar lectura" />
 
-      <View style={{ flexDirection: "row", gap: moderateScale(20) }}>
+      <View style={{ flexDirection: "row", gap: 20 }}>
         <Input
           onGetValue={(value) => setMeterCounter(value)}
           placeholder="Lectura"

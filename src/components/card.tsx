@@ -7,7 +7,6 @@ import Animated, { SlideInRight, StretchInY } from "react-native-reanimated";
 import { Register } from "../lib/interfaces";
 import { palette } from "../utils/colors";
 import { month } from "../utils/get-month";
-import { verticalScale, moderateScale, horizontalScale } from "../utils/metrics";
 
 interface CardProps {
   register: Register;
@@ -91,7 +90,7 @@ export const Card: React.FC<CardProps> = ({
             <View style={{ flex: 1 }}>
               <View
                 style={{
-                  marginBottom: verticalScale(2),
+                  marginBottom: 2,
                   flexDirection: "row",
                   justifyContent: "space-between",
                 }}>
@@ -116,13 +115,13 @@ export const Card: React.FC<CardProps> = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: palette.background,
-    borderRadius: moderateScale(10),
-    padding: moderateScale(10),
-    marginVertical: verticalScale(2),
-    marginHorizontal: horizontalScale(10),
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 2,
+    marginHorizontal: 10,
     flexDirection: "row",
     justifyContent: "flex-start",
-    gap: moderateScale(20),
+    gap: 20,
     alignItems: "center",
     elevation: 0.8,
   },
@@ -132,12 +131,12 @@ const styles = StyleSheet.create({
 
   date: {
     color: palette.accents_7,
-    fontSize: moderateScale(14),
+    fontSize: 14,
     fontWeight: 500,
   },
   kwh: {
     color: palette.accents_7,
-    fontSize: moderateScale(17),
+    fontSize: 17,
     fontWeight: 500,
   },
   price: { color: palette.accents_4 },
