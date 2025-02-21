@@ -4,3 +4,7 @@ credentials
 .github
 .vscode
 credentials.json
+.eslintignore
+.eslintrc.js
+.gitignore
+.prettierrc
