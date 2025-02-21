@@ -14,8 +14,3 @@ export type RateTariff = {
   rate: number;
   index: number;
 };
-
-export type Section = {
-  limit: number;
-  cost: number;
-};
