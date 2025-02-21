@@ -72,6 +72,6 @@ export const calculateElectricityCost = (kwh: number, initRate?: RateTariff) => 
   };
 };
 
-const clone = (object: Object) => {
+const clone = (object: object) => {
   return JSON.parse(JSON.stringify(object));
 };
