@@ -67,7 +67,7 @@ export const calculateElectricityCost = (kwh: number, initRate?: RateTariff) => 
   }
 
   return {
-    cost: parseInt((totalCost / 100).toFixed(2)),
+    cost: Number((totalCost / 100).toFixed(2)),
     rate,
   };
 };
