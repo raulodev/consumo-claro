@@ -1,9 +1,7 @@
 screenshots
-credentials
 .expo
 .github
 .vscode
-credentials.json
 .eslintignore
 .eslintrc.js
 .gitignore
