@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 5,
     borderWidth: 0.5,
-    height: 45,
   },
   circle: {
     borderRadius: 45 / 2,
