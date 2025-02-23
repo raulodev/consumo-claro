@@ -99,7 +99,7 @@ export const Card: React.FC<CardProps> = ({
                   {register.read.toString().length > 15
                     ? register.read
                         .toString()
-                        .replace(register.read.toString().slice(0, -13), "....")
+                        .replace(register.read.toString().slice(0, -10), "...")
                     : register.read}{" "}
                   kwh
                 </Text>
