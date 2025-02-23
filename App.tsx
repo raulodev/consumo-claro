@@ -34,7 +34,7 @@ export default function App() {
   const [registers, setRegisters] = useState<Register[]>([]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [cost, setCost] = useState<number>(0);
-  const [showAlert, setshowAlert] = useState<{ open: boolean; message: string }>({
+  const [showAlert, setShowAlert] = useState<{ open: boolean; message: string }>({
     open: false,
     message: "",
   });
@@ -44,11 +44,16 @@ export default function App() {
       await createTables();
 
       const allRegisters = await getAllRegisters();
-      setRegisters(allRegisters);
 
       if (allRegisters.length <= 1) {
         setCost(0);
       } else {
+        setCost(
+          calculateElectricityCost(
+            allRegisters[allRegisters.length - 1].read - allRegisters[0].read,
+          ).cost,
+        );
+
         let initRate: RateTariff;
         allRegisters.map((register, index, list) => {
           if (index > 0) {
@@ -63,13 +68,9 @@ export default function App() {
           }
           return register;
         });
-
-        setCost(
-          calculateElectricityCost(
-            allRegisters[allRegisters.length - 1].read - allRegisters[0].read,
-          ).cost,
-        );
       }
+
+      setRegisters(allRegisters);
     }
     init();
 
@@ -110,7 +111,7 @@ export default function App() {
       }
 
       if (prevRecord && prevRecord.read >= value) {
-        setshowAlert({
+        setShowAlert({
           ...showAlert,
           open: true,
           message: `Esta lectura no puede ser menor o igual a ${prevRecord?.read}`,
@@ -118,7 +119,7 @@ export default function App() {
         return;
       }
       if (nextRecord && nextRecord.read <= value) {
-        setshowAlert({
+        setShowAlert({
           ...showAlert,
           open: true,
           message: `Esta lectura no puede ser mayor o igual a ${nextRecord?.read}`,
@@ -131,7 +132,7 @@ export default function App() {
       const lastRecord = registers[registers.length - 1];
 
       if (lastRecord && lastRecord.read >= value) {
-        setshowAlert({
+        setShowAlert({
           ...showAlert,
           open: true,
           message: `Esta lectura no puede ser menor o igual a ${lastRecord.read}`,
@@ -163,7 +164,7 @@ export default function App() {
         message={showAlert.message}
         open={showAlert.open}
         onClose={() => {
-          setshowAlert({ ...showAlert, open: false, message: "" });
+          setShowAlert({ ...showAlert, open: false, message: "" });
         }}
       />
 
