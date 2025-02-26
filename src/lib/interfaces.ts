@@ -6,9 +6,11 @@ export interface Register {
   date: number;
   read: number;
   image?: string;
+  cost?: number;
 }
 
-export type Tariff = {
+export type RateTariff = {
   limit: number;
   rate: number;
+  index: number;
 };

@@ -6,7 +6,6 @@ import { StyleSheet, View } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 
 import { Button } from "./button";
-import { moderateScale, verticalScale } from "../utils/metrics";
 
 interface CameraProps {
   getImage: (image: string) => void;
@@ -54,7 +53,7 @@ export const Camera: React.FC<CameraProps> = ({ getImage, back }) => {
   return (
     <Animated.View entering={FadeIn}>
       {image ? (
-        <View style={{ gap: moderateScale(20) }}>
+        <View style={{ gap: 20 }}>
           <Image source={image} style={styles.image} transition={500} contentFit="cover" />
           <Button onPress={savePicture} type="successLight" title="Aceptar" />
           <Button
@@ -65,7 +64,7 @@ export const Camera: React.FC<CameraProps> = ({ getImage, back }) => {
           />
         </View>
       ) : (
-        <View style={{ gap: moderateScale(20) }}>
+        <View style={{ gap: 20 }}>
           <View style={styles.cameraContainer}>
             <CameraView
               animateShutter={false}
@@ -98,11 +97,7 @@ export const Camera: React.FC<CameraProps> = ({ getImage, back }) => {
               icon="camera"
               circle
               type={cameraReady ? "successLight" : "secondary"}
-              style={{
-                borderRadius: 60 / 2,
-                width: 60,
-                height: 60,
-              }}
+              style={styles.buttonCamera}
               onPress={takePicture}
             />
           </View>
@@ -114,11 +109,11 @@ export const Camera: React.FC<CameraProps> = ({ getImage, back }) => {
 
 const styles = StyleSheet.create({
   cameraContainer: {
-    borderRadius: moderateScale(8),
+    borderRadius: 8,
     overflow: "hidden",
   },
   camera: {
-    height: verticalScale(300),
+    height: 300,
   },
   buttonSettingContainer: {
     flexDirection: "row",
@@ -126,8 +121,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   image: {
-    height: verticalScale(300),
-    borderRadius: moderateScale(8),
+    height: 300,
+    borderRadius: 8,
     overflow: "hidden",
+  },
+  buttonCamera: {
+    borderRadius: 60 / 2,
+    width: 60,
+    height: 60,
   },
 });

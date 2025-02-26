@@ -2,7 +2,7 @@
   "expo": {
     "name": "Consumo Claro",
     "slug": "ConsumoClaro",
-    "version": "2.0.2",
+    "version": "2.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png"
       },
-      "package": "com.raulodev.consumoclaro"
+      "package": "com.raulodev.consumoclaro",
+      "versionCode": 2
     },
     "extra": {
       "eas": {

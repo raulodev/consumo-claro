@@ -20,9 +20,8 @@ import {
   deleteRegister,
   updateRegister,
 } from "./src/lib/database";
-import { Register } from "./src/lib/interfaces";
+import { RateTariff, Register } from "./src/lib/interfaces";
 import { palette } from "./src/utils/colors";
-import { moderateScale, verticalScale } from "./src/utils/metrics";
 import { calculateElectricityCost } from "./src/utils/tariff";
 
 type modals = "calculator" | "add-register" | "image-view";
@@ -35,7 +34,7 @@ export default function App() {
   const [registers, setRegisters] = useState<Register[]>([]);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [cost, setCost] = useState<number>(0);
-  const [showAlert, setshowAlert] = useState<{ open: boolean; message: string }>({
+  const [showAlert, setShowAlert] = useState<{ open: boolean; message: string }>({
     open: false,
     message: "",
   });
@@ -45,7 +44,6 @@ export default function App() {
       await createTables();
 
       const allRegisters = await getAllRegisters();
-      setRegisters(allRegisters);
 
       if (allRegisters.length <= 1) {
         setCost(0);
@@ -53,9 +51,26 @@ export default function App() {
         setCost(
           calculateElectricityCost(
             allRegisters[allRegisters.length - 1].read - allRegisters[0].read,
-          ),
+          ).cost,
         );
+
+        let initRate: RateTariff;
+        allRegisters.map((register, index, list) => {
+          if (index > 0) {
+            const { cost, rate } = calculateElectricityCost(
+              register.read - list[index - 1].read,
+              initRate,
+            );
+            initRate = rate;
+            register.cost = cost;
+          } else {
+            register.cost = 0;
+          }
+          return register;
+        });
       }
+
+      setRegisters(allRegisters);
     }
     init();
 
@@ -96,7 +111,7 @@ export default function App() {
       }
 
       if (prevRecord && prevRecord.read >= value) {
-        setshowAlert({
+        setShowAlert({
           ...showAlert,
           open: true,
           message: `Esta lectura no puede ser menor o igual a ${prevRecord?.read}`,
@@ -104,7 +119,7 @@ export default function App() {
         return;
       }
       if (nextRecord && nextRecord.read <= value) {
-        setshowAlert({
+        setShowAlert({
           ...showAlert,
           open: true,
           message: `Esta lectura no puede ser mayor o igual a ${nextRecord?.read}`,
@@ -117,7 +132,7 @@ export default function App() {
       const lastRecord = registers[registers.length - 1];
 
       if (lastRecord && lastRecord.read >= value) {
-        setshowAlert({
+        setShowAlert({
           ...showAlert,
           open: true,
           message: `Esta lectura no puede ser menor o igual a ${lastRecord.read}`,
@@ -149,7 +164,7 @@ export default function App() {
         message={showAlert.message}
         open={showAlert.open}
         onClose={() => {
-          setshowAlert({ ...showAlert, open: false, message: "" });
+          setShowAlert({ ...showAlert, open: false, message: "" });
         }}
       />
 
@@ -166,7 +181,6 @@ export default function App() {
               setImage(image);
               setShowModal("image-view");
             }}
-            prevRegister={registers[index - 1]}
           />
         )}
         keyExtractor={(item) => item.id.toString()}
@@ -177,7 +191,7 @@ export default function App() {
         <FloatingButton
           icon="pencil"
           animate
-          style={{ bottom: moderateScale(260), right: moderateScale(20) }}
+          style={{ bottom: 260, right: 20 }}
           onPress={async () => {
             setShowModal("add-register");
             const editRegister = registers.filter((item) => item.id === selectedIds[0]);
@@ -191,7 +205,7 @@ export default function App() {
           icon="trash"
           iconColor={palette.error}
           animate
-          style={{ bottom: moderateScale(180), right: moderateScale(20) }}
+          style={{ bottom: 180, right: 20 }}
           onPress={async () => {
             selectedIds.forEach(async (id) => {
               await deleteRegister(id);
@@ -205,13 +219,13 @@ export default function App() {
       <FloatingButton
         icon="calculator"
         animate={false}
-        style={{ bottom: moderateScale(100), right: moderateScale(20) }}
+        style={{ bottom: 100, right: 20 }}
         onPress={() => setShowModal("calculator")}
       />
 
       <FloatingButton
         animate={false}
-        style={{ bottom: moderateScale(20), right: moderateScale(20) }}
+        style={{ bottom: 20, right: 20 }}
         onPress={() => setShowModal("add-register")}
       />
 
@@ -222,14 +236,14 @@ export default function App() {
         }}>
         <View
           style={{
-            gap: moderateScale(20),
+            gap: 20,
           }}>
           <Image
             source={{ uri: image }}
             transition={500}
             style={{
-              height: verticalScale(300),
-              borderRadius: moderateScale(8),
+              height: 300,
+              borderRadius: 8,
               overflow: "hidden",
             }}
           />
@@ -274,15 +288,15 @@ const styles = StyleSheet.create({
   },
   label: {
     color: palette.accents_7,
-    fontSize: moderateScale(18),
+    fontSize: 18,
     fontWeight: "500",
   },
   input: {
-    fontSize: moderateScale(18),
+    fontSize: 18,
     borderWidth: 0.25,
     borderColor: palette.accents_5,
-    borderRadius: moderateScale(5),
-    padding: moderateScale(8),
+    borderRadius: 5,
+    padding: 8,
     flex: 1,
   },
 });

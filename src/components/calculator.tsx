@@ -5,7 +5,6 @@ import { Button } from "./button";
 import { Input } from "./input";
 import { Label } from "./label";
 import { palette } from "../utils/colors";
-import { moderateScale } from "../utils/metrics";
 import { calculateElectricityCost } from "../utils/tariff";
 
 interface CalculatorProps {
@@ -22,12 +21,12 @@ export const Calculator: React.FC<CalculatorProps> = ({ onClose }) => {
     const secondCounter = Number(secondMeterCounter);
 
     if (firstMeterCounter && !secondMeterCounter) {
-      setPrecie(calculateElectricityCost(firstCounter));
+      setPrecie(calculateElectricityCost(firstCounter).cost);
     } else if (firstMeterCounter && secondMeterCounter) {
       if (secondCounter < firstCounter) {
-        setPrecie(calculateElectricityCost(firstCounter - secondCounter));
+        setPrecie(calculateElectricityCost(firstCounter - secondCounter).cost);
       } else {
-        setPrecie(calculateElectricityCost(secondCounter - firstCounter));
+        setPrecie(calculateElectricityCost(secondCounter - firstCounter).cost);
       }
     }
   }, [firstMeterCounter, secondMeterCounter]);
@@ -59,6 +58,6 @@ export const Calculator: React.FC<CalculatorProps> = ({ onClose }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: palette.background,
-    gap: moderateScale(20),
+    gap: 20,
   },
 });

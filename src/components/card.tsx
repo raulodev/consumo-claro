@@ -7,8 +7,6 @@ import Animated, { SlideInRight, StretchInY } from "react-native-reanimated";
 import { Register } from "../lib/interfaces";
 import { palette } from "../utils/colors";
 import { month } from "../utils/get-month";
-import { verticalScale, moderateScale, horizontalScale } from "../utils/metrics";
-import { calculateElectricityCost } from "../utils/tariff";
 
 interface CardProps {
   register: Register;
@@ -16,7 +14,6 @@ interface CardProps {
   isSelectQuick?: boolean;
   selected: number[];
   onGetImage: (image: string) => void;
-  prevRegister: Register;
 }
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
@@ -27,7 +24,6 @@ export const Card: React.FC<CardProps> = ({
   isSelectQuick,
   selected,
   onGetImage,
-  prevRegister,
 }) => {
   const select = (vibrate = true) => {
     onSelect(register.id);
@@ -94,20 +90,24 @@ export const Card: React.FC<CardProps> = ({
             <View style={{ flex: 1 }}>
               <View
                 style={{
-                  marginBottom: verticalScale(2),
+                  marginBottom: 2,
                   flexDirection: "row",
                   justifyContent: "space-between",
+                  position: "relative",
                 }}>
                 <Text numberOfLines={1} style={styles.kwh}>
-                  {register.read} kwh
+                  {register.read.toString().length > 15
+                    ? register.read
+                        .toString()
+                        .replace(register.read.toString().slice(0, -10), "...")
+                    : register.read}{" "}
+                  kwh
                 </Text>
                 <Text style={styles.date}>{`${register.day} ${month(register.month)}`}</Text>
               </View>
               <View>
                 <Text style={styles.price}>
-                  {prevRegister
-                    ? `+ ${calculateElectricityCost(register.read - prevRegister.read)} $`
-                    : "0 $"}
+                  {!register.cost ? "Lectura inicial" : `${register.cost} $`}
                 </Text>
               </View>
             </View>
@@ -121,13 +121,13 @@ export const Card: React.FC<CardProps> = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: palette.background,
-    borderRadius: moderateScale(10),
-    padding: moderateScale(10),
-    marginVertical: verticalScale(2),
-    marginHorizontal: horizontalScale(10),
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 2,
+    marginHorizontal: 10,
     flexDirection: "row",
     justifyContent: "flex-start",
-    gap: moderateScale(20),
+    gap: 20,
     alignItems: "center",
     elevation: 0.8,
   },
@@ -137,12 +137,15 @@ const styles = StyleSheet.create({
 
   date: {
     color: palette.accents_7,
-    fontSize: moderateScale(14),
+    fontSize: 14,
     fontWeight: 500,
+    position: "absolute",
+    top: 0,
+    right: 0,
   },
   kwh: {
     color: palette.accents_7,
-    fontSize: moderateScale(17),
+    fontSize: 17,
     fontWeight: 500,
   },
   price: { color: palette.accents_4 },
